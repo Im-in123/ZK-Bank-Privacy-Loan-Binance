@@ -27,6 +27,9 @@ const LoanRequest = () => {
   };
 
   const requestVerifyMessage = async (e: React.FormEvent) => {
+    if(loanAmount < 1){
+      toast.error("Loan amount shuld be greater than $1")
+    }
     e.preventDefault();
     setLoading(true);
 
