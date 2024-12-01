@@ -13,12 +13,8 @@ LoanModel.init(
       autoIncrement: true,
     },
     userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "users", // Referring to the User table
-        key: "id",
-      },
+      type: DataTypes.INTEGER, // Now it's just a simple number field
+      allowNull: false,        
     },
     loanAmount: {
       type: DataTypes.FLOAT,
@@ -31,7 +27,7 @@ LoanModel.init(
     loanStatus: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "pending", // Status can be "pending", "approved", or "rejected"
+      defaultValue: "Approved", 
     },
     approvedAmount: {
       type: DataTypes.FLOAT,
@@ -52,7 +48,7 @@ LoanModel.init(
   },
   {
     sequelize: sequelizeLoans,
-    modelName: "Loan",
+    modelName: "loans",
     timestamps: true, // Automatically manage createdAt and updatedAt
   }
 );

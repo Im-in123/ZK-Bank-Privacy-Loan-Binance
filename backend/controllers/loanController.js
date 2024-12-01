@@ -4,6 +4,7 @@ import UserModel from "../models/UserModel.js"; // Import user model for referen
 
 // Request a new loan
 const requestLoan = async (req, res) => {
+  console.log("Requesting loan")
   const { loanAmount, loanTerm } = req.body;
   const userId = req.userId; // Assuming the user ID is available in the request
 
@@ -20,6 +21,7 @@ const requestLoan = async (req, res) => {
       loanAmount,
       loanTerm,
       loanDetails,
+      approvedAmount: loanAmount
     });
 
     res.status(201).json({
@@ -65,7 +67,7 @@ const getLoanHistory = async (req, res) => {
 // Get loan details by loan ID
 const getLoanDetails = async (req, res) => {
   const { loanId } = req.params;
-
+console.log("loan id::",loanId )
   try {
     const loan = await LoanModel.findByPk(loanId);
     if (!loan) {

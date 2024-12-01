@@ -28,9 +28,9 @@ const Router = () => {
                 <LoanHistory />
               </AuthWrapper>
             }
-          />
+          />  
           <Route
-            path="/loan/:loanId"
+            path="/loans/:id"
             element={
               <AuthWrapper>
                 <LoanDetails />

@@ -4,19 +4,20 @@ import TransgateConnect from "@zkpass/transgate-js-sdk";
 import { ethers } from "ethers";
 import { useWriteGetSecretAssignSecret } from "../generated";
 import { BASE_URL } from "../constants";
+import '../styles/LoanRequest.css';  
 
 const contractAddress = "0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5";
-const appId= "b7627e76-b9f2-41b0-b954-2bc5f63ecec3"
-const schemaId = "7b7b31ecbc654213ba7fc189b01d21f3"
+const appId= "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
+const schemaId = "7b7b31ecbc654213ba7fc189b01d21f3";
 
 const LoanRequest = () => {
-  
   const [loanAmount, setLoanAmount] = useState<number>(1000);
   const [loanTerm, setLoanTerm] = useState<number>(12);
   const [result, setResult] = useState<any | undefined>(undefined);
   const [loanStatus, setLoanStatus] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false); // Loading state
+  const [loading, setLoading] = useState<boolean>(false);
   const { writeContractAsync } = useWriteGetSecretAssignSecret();
+
 
   const calculateMonthlyPayment = (amount: number, term: number) => {
     const interestRate = 0.05;
@@ -27,7 +28,7 @@ const LoanRequest = () => {
 
   const requestVerifyMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Set loading state to true
+    setLoading(true);
 
     try {
       const connector = new TransgateConnect(appId);
@@ -45,7 +46,6 @@ const LoanRequest = () => {
           alert("Verified Successfully");
           setResult(res);
 
-          // Send loan details to the smart contract before backend creation
           const monthlyPayment = calculateMonthlyPayment(loanAmount, loanTerm);
 
           const taskId = ethers.hexlify(ethers.toUtf8Bytes(res.taskId)) as `0x${string}`;
@@ -61,32 +61,34 @@ const LoanRequest = () => {
               validator: res.validatorAddress as `0x${string}`,
               allocatorSignature: res.allocatorSignature as `0x${string}`,
               validatorSignature: res.validatorSignature as `0x${string}`,
-             
             };
-
-            // Send data to smart contract
+            alert("Finished contract verification successfully!")
             await writeContractAsync({
               address: contractAddress,
               args: [chainParams],
             });
 
-            // Now call the backend to create the loan
             const loanData = {
               loanAmount,
               loanTerm,
             };
+try {
+  const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 
-            const response = await axios.post(`${BASE_URL}loan/request`, loanData, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`, // if you use JWT
-              },
-            });
-
-            if (response.status === 201) {
-              setLoanStatus("Loan successfully created!");
-            } else {
-              setLoanStatus("Error creating loan on the backend.");
-            }
+  if (response.status === 201) {
+    setLoanStatus("Loan successfully created!");
+    
+  } else {
+    setLoanStatus("Error creating loan on the backend.");
+  }
+} catch (error) {
+  console.log("error creating loan on backend server::", error)
+}
+           
           }
         } else {
           setLoanStatus("Verification failed.");
@@ -98,59 +100,80 @@ const LoanRequest = () => {
       console.error("Error verifying loan:", error);
       setLoanStatus("An error occurred during verification.");
     } finally {
-      setLoading(false); // Set loading state to false once done
+      setLoading(false);
     }
   };
-
+const resub= async()=>{
+  const loanData = {
+    loanAmount:1000,
+    loanTerm:12,
+  };
+  try {
+    const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  
+    if (response.status === 201) {
+      setLoanStatus("Loan successfully created!");
+      
+    } else {
+      setLoanStatus("Error creating loan on the backend.");
+    }
+  } catch (error) {
+    console.log("error creating loan on backend server::", error)
+  }
+}
   return (
-    <div>
-    <form className="form" onSubmit={requestVerifyMessage}>
-      <label htmlFor="loan-amount">
-        Loan Amount (USDT):
-        <input
-          id="loan-amount"
-          type="number"
-          value={loanAmount}
-          onChange={(e) => 
-            setLoanAmount(Number(e.target.value))
-          }
-        />
-      </label>
-      <label htmlFor="loan-term">
-        Loan Term (Months):
-        <input
-          id="loan-term"
-          type="number"
-          value={loanTerm}
-          onChange={(e) => setLoanTerm(Number(e.target.value))}
-        />
-      </label>
-      <button type="submit" disabled={loading}>
-        {loading ? "Verifying..." : "Start Loan Verification"}
-      </button>
+    <div className="loan-form-container">
+      <form className="form" onSubmit={requestVerifyMessage}>
+        <label htmlFor="loan-amount">
+          Loan Amount (USDT):
+          <input
+            id="loan-amount"
+            type="number"
+            value={loanAmount}
+            onChange={(e) => setLoanAmount(Number(e.target.value))}
+          />
+        </label>
+        <label htmlFor="loan-term">
+          Loan Term (Months):
+          <input
+            id="loan-term"
+            type="number"
+            value={loanTerm}
+            onChange={(e) => setLoanTerm(Number(e.target.value))}
+          />
+        </label>
+        <button type="submit" disabled={loading}>
+          {loading ? "Verifying..." : "Start Loan Verification"}
+        </button>
 
-      {loanStatus && <h3>{loanStatus}</h3>}
+        {loanStatus && <h3>{loanStatus}</h3>}
 
-      <div>
-        <h3>Repayment Details:</h3>
-        <p><strong>Loan Amount:</strong> {loanAmount} USDT</p>
-        <p><strong>Loan Term:</strong> {loanTerm} months</p>
-        <p>
-          <strong>Monthly Payment:</strong>
-          {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT
-        </p>
-      </div>
+        <div className="repayment-details">
+          <h3>Repayment Details:</h3>
+          <p><strong>Loan Amount:</strong> {loanAmount} USDT</p>
+          <p><strong>Loan Term:</strong> {loanTerm} months</p>
+          <p>
+            <strong>Monthly Payment:</strong>
+            {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT
+          </p>
+        </div>
 
-      {result && (
-        <>
-          <h1>Loan Approved: {loanAmount} USDT</h1>
-          <h2>Term: {loanTerm} Months</h2>
-          <h3>Monthly Payment: {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT</h3>
-        </>
-      )}
-    </form>
-  </div>
-  )
+        {result && (
+          <div className="loan-result">
+            <h1>Loan Approved: {loanAmount} USDT</h1>
+            <h2>Term: {loanTerm} Months</h2>
+            <h3>Monthly Payment: {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT</h3>
+          </div>
+        )}
+        
+      </form>
+      <button onClick={()=>resub()}>test</button>
+    </div>
+  );
 };
 
 export default LoanRequest;
