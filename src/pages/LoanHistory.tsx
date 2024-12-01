@@ -3,13 +3,28 @@ import axios from 'axios';
 import { BASE_URL } from '../constants';
 import Loader from '../components/Loader';
 import { useNavigate } from 'react-router-dom';
-import '../styles/LoanHistory.css';
 import moment from 'moment';
+import '../styles/LoanHistory.css';
 
-const LoanHistory = () => {
-  const [loans, setLoans] = useState([]);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+// Define the loan data interface
+interface LoanDetails {
+  totalRepayment: number;
+}
+
+interface Loan {
+  id: string;
+  loanAmount: number;
+  loanTerm: number;
+  loanStatus: string;
+  loanDetails: LoanDetails;
+  createdAt: string;
+}
+
+// LoanHistory component
+const LoanHistory: React.FC = () => {
+  const [loans, setLoans] = useState<Loan[]>([]);
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,8 +36,8 @@ const LoanHistory = () => {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        setLoans(response.data.loans);
-      } catch (err) {
+        setLoans(response.data.loans); // Assuming response data contains an array of loans
+      } catch (err: any) {
         console.log('error:', err);
         if (err.response?.status === 401) {
           localStorage.removeItem('token');
@@ -38,7 +53,7 @@ const LoanHistory = () => {
     fetchLoanHistory();
   }, [navigate]);
 
-  const handleLoanClick = (loanId) => {
+  const handleLoanClick = (loanId: string) => {
     navigate(`/loans/${loanId}`); // Navigate to the loan details page
   };
 
@@ -58,7 +73,7 @@ const LoanHistory = () => {
               onClick={() => handleLoanClick(loan.id)} // Add onClick handler
             >
               <div className="loan-detail">
-                <strong>Loan Amount:</strong> ${loan.loanAmount }
+                <strong>Loan Amount:</strong> ${loan.loanAmount}
               </div>
               <div className="loan-detail">
                 <strong>Loan Term:</strong> {loan.loanTerm} months
@@ -67,10 +82,10 @@ const LoanHistory = () => {
                 <strong>Status:</strong> {loan.loanStatus || 'Pending'}
               </div>
               <div className="loan-detail">
-                <strong>Total Repayment:</strong> ${loan.loanDetails.totalRepayment }
+                <strong>Total Repayment:</strong> ${loan.loanDetails.totalRepayment}
               </div>
               <div className="loan-detail">
-                <strong>Date Created:</strong>   {moment(loan.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                <strong>Date Created:</strong> {moment(loan.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
               </div>
             </li>
           ))}

@@ -1,10 +1,22 @@
-
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../styles/Dashboard.css';
 
-const Dashboard = () => {
-  const user = useSelector((state) => state.user.user);
+// Define the shape of the user object in the Redux state
+interface User {
+  username: string;
+  // Add other properties of the user object as needed
+}
+
+interface RootState {
+  user: {
+    user: User | null; // user can be null if not logged in
+  };
+}
+
+const Dashboard: React.FC = () => {
+  // Use typed useSelector to fetch the user from the Redux state
+  const user = useSelector((state: RootState) => state.user.user);
 
   return (
     <div className="dashboard-container">

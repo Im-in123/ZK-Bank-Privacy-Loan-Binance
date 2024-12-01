@@ -23,19 +23,28 @@ const Header = () => {
       <nav className="navbar">
         <ul className="nav-list">
           <li>
-            <NavLink to="/" className="nav-link" activeClassName="active-link">
+            <NavLink
+              to="/"
+              className={({ isActive }) => (isActive ? "nav-link active-link" : "nav-link")}
+            >
               <FaHome className="nav-icon" /> Home
             </NavLink>
           </li>
           {user ? (
             <>
               <li>
-                <NavLink to="/loan-history" className="nav-link" activeClassName="active-link">
+                <NavLink
+                  to="/loan-history"
+                  className={({ isActive }) => (isActive ? "nav-link active-link" : "nav-link")}
+                >
                   <FaHistory className="nav-icon" /> Loan History
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/loan-request" className="nav-link" activeClassName="active-link">
+                <NavLink
+                  to="/loan-request"
+                  className={({ isActive }) => (isActive ? "nav-link active-link" : "nav-link")}
+                >
                   <FaClipboardList className="nav-icon" /> Apply for Loan
                 </NavLink>
               </li>
@@ -48,12 +57,18 @@ const Header = () => {
           ) : (
             <>
               <li>
-                <NavLink to="/signup" className="nav-link" activeClassName="active-link">
+                <NavLink
+                  to="/signup"
+                  className={({ isActive }) => (isActive ? "nav-link active-link" : "nav-link")}
+                >
                   <FaUserPlus className="nav-icon" /> Sign Up
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/login" className="nav-link" activeClassName="active-link">
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) => (isActive ? "nav-link active-link" : "nav-link")}
+                >
                   <FaSignInAlt className="nav-icon" /> Log In
                 </NavLink>
               </li>
