@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { useWriteGetSecretAssignSecret } from "../generated";
 import { BASE_URL } from "../constants";
 import '../styles/LoanRequest.css';
+import { toast } from "react-toastify";
 
 const contractAddress = "0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5";
 const appId = "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
@@ -42,7 +43,8 @@ const LoanRequest = () => {
 
         const validatedResult = connector.verifyProofMessageSignature("evm", schemaId, res);
         if (validatedResult) {
-          alert("Verified Successfully");
+          alert("ZKProof Verified Successfully")
+          toast.success("ZKProof Verified Successfully");
           setResult(res);
 
           const monthlyPayment = calculateMonthlyPayment(loanAmount, loanTerm);
@@ -61,11 +63,13 @@ const LoanRequest = () => {
               allocatorSignature: res.allocatorSignature as `0x${string}`,
               validatorSignature: res.validatorSignature as `0x${string}`,
             };
-            alert("Finished contract verification successfully!")
+           
             await writeContractAsync({
               address: contractAddress,
               args: [chainParams],
             });
+            toast.success("Confirming contract verification successfully!")
+            toast.success("Please wait to confirm the transaction in your browser wallet popup!")
 
             const loanData = {
               loanAmount,
@@ -79,7 +83,8 @@ const LoanRequest = () => {
               });
 
               if (response.status === 201) {
-                setLoanStatus("Loan successfully created!");
+                setLoanStatus("Loan successfully Approved!");
+                toast.success("Your loan request has been approved!")
               } else {
                 setLoanStatus("Error creating loan on the backend.");
               }
@@ -104,7 +109,7 @@ const LoanRequest = () => {
   return (
     <div className="loan-form-container">
       <form className="form" onSubmit={requestVerifyMessage}>
-        <h3>LOAN REQUEST</h3>
+        <h3>LOAN REQUEST CREDIBILITY WITH (BINANCE )</h3>
       
 
         <label htmlFor="loan-amount">
@@ -152,18 +157,19 @@ const LoanRequest = () => {
       </form>
       <div>
         <br></br>
+        <h3>Eligibility Criteria</h3>
           <p className="eligibility-title">To be eligible for the loan, the following conditions must be met:</p>
           <div className="eligibility-container">
             <div className="eligibility-condition">
               <div className="condition-icon">💰</div>
               <div className="condition-text">
-                <strong>Earn Balance:</strong> Your Earn Balance should be more than 1 USDT.
+                <strong>Binance Earn Balance:</strong> Your Binance Earn Balance should be more than 1 USDT.
               </div>
             </div>
             <div className="eligibility-condition">
               <div className="condition-icon">⏳</div>
               <div className="condition-text">
-                <strong>Active Balance:</strong> Your Active Balance from the past 24 hours should be more than 1 USDT.
+                <strong>Binance Active Balance:</strong> Your Active Binance Balance from the past 24 hours should be more than 1 USDT.
               </div>
             </div>
           </div>
