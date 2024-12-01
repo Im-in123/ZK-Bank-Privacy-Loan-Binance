@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+secret/artifacts/
+secret/cache/
+secret/out/
+secret/lib/
