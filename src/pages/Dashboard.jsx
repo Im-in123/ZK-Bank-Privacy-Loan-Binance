@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const Dashboard = () => (
-  <div>
-    <h1>Dashboard</h1>
-    <Link to="/history">View Loan History</Link>
-    <Link to="/apply">Apply for a Loan</Link>
-  </div>
-);
+const Dashboard = () => {
+  const user = useSelector((state) => state.user.user);
+
+  return (
+    <div>
+      <h1>Welcome, {user ? user.username : 'Guest'}</h1>
+      {/* Render other user details */}
+    </div>
+  );
+};
 
 export default Dashboard;
