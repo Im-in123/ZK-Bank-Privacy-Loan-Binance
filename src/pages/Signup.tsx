@@ -7,20 +7,28 @@ import { useDispatch } from 'react-redux';
 import "../styles/Auth.css";
 import { BASE_URL } from '../constants';
 import Loader from '../components/Loader';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   const dispatch = useDispatch(); // Hook to dispatch actions
-  const [formData, setFormData] = useState({ username: '', email: '', password: '', confirmPassword: '' });
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e) => {
+  // Specify type for change event
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  // Specify type for submit event
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setSuccess('');
@@ -37,7 +45,8 @@ const Signup = () => {
       setSuccess(response.data.message);
       // Dispatch setUser to store user data in Redux state
       dispatch(setUser(response.data.user)); // Assume response contains user object
-    } catch (err) {
+      toast.success("Account created successfully! Login to continue!")
+    } catch (err: any) { // Use 'any' here if the error type is dynamic
       setError(err.response?.data?.message || 'An error occurred');
     } finally {
       setIsLoading(false);

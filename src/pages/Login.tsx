@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux'; // Import useDispatch
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
-import { setUser } from '../store/userSlice'; // Import setUser action
+import { Link, useNavigate } from 'react-router-dom';
+import { setUser } from '../store/userSlice';
 import "../styles/Auth.css";
 import { BASE_URL } from '../constants';
 import Loader from '../components/Loader';
 
-const Login = () => {
-  const dispatch = useDispatch(); // Hook to dispatch actions
-  const navigate = useNavigate(); // Hook to handle navigation
+const Login: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e) => {
+  // Explicitly type the event parameter
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  // Explicitly type the event parameter
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setSuccess('');
@@ -30,14 +32,16 @@ const Login = () => {
     try {
       const response = await axios.post(`${BASE_URL}/auth/login`, formData);
       setSuccess(response.data.message);
+
       // Dispatch setUser to store user data in Redux state
       dispatch(setUser(response.data.user)); // Assume response contains user object
-        // Set token in localStorage
-    localStorage.setItem('token', response.data.token); // Store the token received from the server
+
+      // Store the token in localStorage
+      localStorage.setItem('token', response.data.token);
 
       // Redirect to Dashboard after successful login
-      navigate('/dashboard'); // Change '/dashboard' to your desired route
-    } catch (err) {
+      navigate('/'); // Change '/dashboard' to your desired route
+    } catch (err: any) {
       setError(err.response?.data?.message || 'An error occurred');
     } finally {
       setIsLoading(false);

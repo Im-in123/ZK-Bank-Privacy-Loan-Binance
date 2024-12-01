@@ -38,7 +38,7 @@ const Router = () => {
             }
           />
           <Route
-            path="/dashboard"
+            path="/"
             element={
               <AuthWrapper>
                 <Dashboard />

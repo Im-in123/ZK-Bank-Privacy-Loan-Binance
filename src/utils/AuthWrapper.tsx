@@ -4,8 +4,9 @@ import { setUser, clearUser } from '../store/userSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../constants';
+import { PropsWithChildren } from 'react';
 
-const AuthWrapper = ({ children }) => {
+const AuthWrapper: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
