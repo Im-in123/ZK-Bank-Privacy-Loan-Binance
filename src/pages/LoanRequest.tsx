@@ -4,10 +4,10 @@ import TransgateConnect from "@zkpass/transgate-js-sdk";
 import { ethers } from "ethers";
 import { useWriteGetSecretAssignSecret } from "../generated";
 import { BASE_URL } from "../constants";
-import '../styles/LoanRequest.css';  
+import '../styles/LoanRequest.css';
 
 const contractAddress = "0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5";
-const appId= "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
+const appId = "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
 const schemaId = "7b7b31ecbc654213ba7fc189b01d21f3";
 
 const LoanRequest = () => {
@@ -84,7 +84,7 @@ const LoanRequest = () => {
                 setLoanStatus("Error creating loan on the backend.");
               }
             } catch (error) {
-              console.log("error creating loan on backend server::", error)
+              console.log("error creating loan on backend server::", error);
             }
           }
         } else {
@@ -104,15 +104,8 @@ const LoanRequest = () => {
   return (
     <div className="loan-form-container">
       <form className="form" onSubmit={requestVerifyMessage}>
-        <h3>Loan Eligibility Criteria</h3>
-        <p>
-          To be eligible for the loan, the following conditions must be met:
-          <ul>
-            <li>Your <strong>Earn Balance</strong> should be more than 1 USDT.</li>
-            <li>Your <strong>Active Balance</strong> from the past 24 hours should be more than 1 USDT.</li>
-          </ul>
-          Please note that we use <strong>zkProofs</strong> for all verifications, ensuring that none of your private Binance data is exposed. Your financial data will remain confidential, and only the proof of eligibility will be shared for verification.
-        </p>
+        <h3>LOAN REQUEST</h3>
+      
 
         <label htmlFor="loan-amount">
           Loan Amount (USDT):
@@ -133,7 +126,7 @@ const LoanRequest = () => {
           />
         </label>
         <button type="submit" disabled={loading}>
-          {loading ? "Verifying..." : "Start Loan Verification"}
+          {loading ? "Verifying..." : "Start Credibility Verification"}
         </button>
 
         {loanStatus && <h3>{loanStatus}</h3>}
@@ -153,11 +146,32 @@ const LoanRequest = () => {
             <h2>Term: {loanTerm} Months</h2>
             <h3>Monthly Payment: {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT</h3>
             <h3>Total Repayment: {(calculateMonthlyPayment(loanAmount, loanTerm) * loanTerm).toFixed(2)} USDT</h3>
-            <h3>Interest Rate: 5%</h3>  
+            <h3>Interest Rate: 5%</h3>
           </div>
         )}
-        
       </form>
+      <div>
+        <br></br>
+          <p className="eligibility-title">To be eligible for the loan, the following conditions must be met:</p>
+          <div className="eligibility-container">
+            <div className="eligibility-condition">
+              <div className="condition-icon">💰</div>
+              <div className="condition-text">
+                <strong>Earn Balance:</strong> Your Earn Balance should be more than 1 USDT.
+              </div>
+            </div>
+            <div className="eligibility-condition">
+              <div className="condition-icon">⏳</div>
+              <div className="condition-text">
+                <strong>Active Balance:</strong> Your Active Balance from the past 24 hours should be more than 1 USDT.
+              </div>
+            </div>
+          </div>
+
+          <p className="eligibility-note">
+            Please note that we use <strong>zkProofs</strong> for all verifications, ensuring that none of your private Binance data is exposed. Your financial data will remain confidential, and only the proof of eligibility will be shared for verification.
+          </p>
+        </div>
     </div>
   );
 };
