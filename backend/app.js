@@ -12,8 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRoutes); // Use auth routes
-app.use("/api/loans", loanRoutes); // Use loan routes
+app.use("/auth", authRoutes); // Use auth routes
+app.use("/loans", loanRoutes); // Use loan routes
 
 
 

@@ -1,4 +1,9 @@
-.app {
+:root {
+  width: 100%;
+  height: auto;
+}
+
+/* .app {
   font-family: Arial, sans-serif;
   padding: 20px;
 }
@@ -41,3 +46,56 @@ pre {
   padding: 10px;
   border-radius: 5px;
 }
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+  */
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  background-color: #f3f4f6; /* Light background for the whole page */
+  color: #333;
+}
+
+/* Body Setup */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Ensuring full height of the page */
+html, body {
+  height: 100%;
+}
+
+/* Flexbox setup for center alignment and spacing */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 1rem;
+}
+ 
+ 

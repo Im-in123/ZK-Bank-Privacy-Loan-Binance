@@ -1,0 +1,1 @@
+export const BASE_URL = "https://ideal-tribble-vw56rpqj6ggfvwx-5000.app.github.dev"
