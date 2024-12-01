@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="modern-footer">
       <div className="footer-content">
-        <p>© 2024 ZK-Privacy Loan. All rights reserved.</p>
+        <p>© 2024 ZK-Bank Privacy Loan (Binance). All rights reserved.</p>
         <ul className="social-links">
           <li><a href="#" className="social-link">Privacy Policy</a></li>
           <li><a href="#" className="social-link">Terms of Service</a></li>
