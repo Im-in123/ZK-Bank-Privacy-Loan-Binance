@@ -1,68 +1,92 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { BASE_URL } from '../constants';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../constants";
+import "../styles/LoanDetail.css";  
+import Loader from "../components/Loader";  
+import moment from "moment";  
 
-const LoanDetails = () => {
-  const { id } = useParams(); // 'id' must match ':id' in the route
+const LoanDetail = () => {
+  const { id } = useParams();
   const [loan, setLoan] = useState(null);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);  
 
   useEffect(() => {
     const fetchLoanDetails = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/loans/${id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
-        setLoan(response.data.loan); // Ensure API response matches structure
+        setLoan(response.data.loan);
       } catch (err) {
-        console.error('Error fetching loan details:', err);
+        setError("Error fetching loan details");
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchLoanDetails();
   }, [id]);
 
-  if (!loan) return <p>Loading...</p>;
-
+  
+ 
   return (
     <div className="loan-details-container">
-      <h1>Loan Details</h1>
-    
-      
-      <div className="loan-detail">
-        <strong>Loan Amount:</strong> ${loan.loanAmount.toFixed(2)}
-      </div>
-      <div className="loan-detail">
-        <strong>Loan Term:</strong> {loan.loanTerm} months
-      </div>
-      <div className="loan-detail">
-        <strong>Loan Status:</strong> {loan.loanStatus}
-      </div>
-      <div className="loan-detail">
-        <strong>Approved Amount:</strong> ${loan.approvedAmount.toFixed(2)}
-      </div>
-      <div className="loan-detail">
-        <strong>Created At:</strong> {new Date(loan.createdAt).toLocaleString()}
-      </div>
-      <div className="loan-detail">
-        <strong>Updated At:</strong> {new Date(loan.updatedAt).toLocaleString()}
-      </div>
-      <div className="loan-detail">
-        <strong>Loan Details:</strong>
-        <ul>
-          <li>
-            <strong>Monthly Payment:</strong> ${loan.loanDetails.monthlyPayment.toFixed(2)}
-          </li>
-          <li>
-            <strong>Total Repayment:</strong> ${loan.loanDetails.totalRepayment.toFixed(2)}
-          </li>
-          <li>
-            <strong>Interest Rate:</strong> {loan.loanDetails.interestRate}%
-          </li>
-        </ul>
-      </div>
+        {isLoading && <Loader />}
+        {error && <p className="error-message">{error}</p>}
+      <h1 className="loan-details-header">Loan Details</h1>
+      {loan ? (
+        <div className="loan-card">
+       
+          <div className="loan-field">
+            <span className="label">Loan Amount:</span>
+            <span className="value">${loan.loanAmount }</span>
+          </div>
+          <div className="loan-field">
+            <span className="label">Loan Term:</span>
+            <span className="value">{loan.loanTerm} months</span>
+          </div>
+       
+          <div className="loan-field">
+            <span className="label">Loan Status:</span>
+            <span className="value">{loan.loanStatus}</span>
+          </div>
+          <div className="loan-field">
+            <span className="label">Approved Amount:</span>
+            <span className="value">${loan.approvedAmount}</span>
+          </div>
+          <div className="loan-field">
+            <span className="label">Monthly Payment:</span>
+            <span className="value">
+              ${loan.loanDetails.monthlyPayment }
+            </span>
+          </div>
+          <div className="loan-field">
+            <span className="label">Total Repayment:</span>
+            <span className="value">
+              ${loan.loanDetails.totalRepayment }
+            </span>
+          </div>
+          <div className="loan-field">
+            <span className="label">Interest Rate:</span>
+            <span className="value">{loan.loanDetails.interestRate}%</span>
+          </div>
+        
+          <div className="loan-field">
+            <span className="label">Created At:</span>
+            <span className="value">
+              {moment(loan.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="loading">No details available.</div>
+      )}
     </div>
   );
 };
 
-export default LoanDetails;
+export default LoanDetail;

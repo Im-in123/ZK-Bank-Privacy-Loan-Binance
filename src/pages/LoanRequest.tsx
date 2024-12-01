@@ -18,7 +18,6 @@ const LoanRequest = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { writeContractAsync } = useWriteGetSecretAssignSecret();
 
-
   const calculateMonthlyPayment = (amount: number, term: number) => {
     const interestRate = 0.05;
     const monthlyRate = interestRate / 12;
@@ -72,23 +71,21 @@ const LoanRequest = () => {
               loanAmount,
               loanTerm,
             };
-try {
-  const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+            try {
+              const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+              });
 
-  if (response.status === 201) {
-    setLoanStatus("Loan successfully created!");
-    
-  } else {
-    setLoanStatus("Error creating loan on the backend.");
-  }
-} catch (error) {
-  console.log("error creating loan on backend server::", error)
-}
-           
+              if (response.status === 201) {
+                setLoanStatus("Loan successfully created!");
+              } else {
+                setLoanStatus("Error creating loan on the backend.");
+              }
+            } catch (error) {
+              console.log("error creating loan on backend server::", error)
+            }
           }
         } else {
           setLoanStatus("Verification failed.");
@@ -103,31 +100,20 @@ try {
       setLoading(false);
     }
   };
-const resub= async()=>{
-  const loanData = {
-    loanAmount:1000,
-    loanTerm:12,
-  };
-  try {
-    const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-  
-    if (response.status === 201) {
-      setLoanStatus("Loan successfully created!");
-      
-    } else {
-      setLoanStatus("Error creating loan on the backend.");
-    }
-  } catch (error) {
-    console.log("error creating loan on backend server::", error)
-  }
-}
+
   return (
     <div className="loan-form-container">
       <form className="form" onSubmit={requestVerifyMessage}>
+        <h3>Loan Eligibility Criteria</h3>
+        <p>
+          To be eligible for the loan, the following conditions must be met:
+          <ul>
+            <li>Your <strong>Earn Balance</strong> should be more than 1 USDT.</li>
+            <li>Your <strong>Active Balance</strong> from the past 24 hours should be more than 1 USDT.</li>
+          </ul>
+          Please note that we use <strong>zkProofs</strong> for all verifications, ensuring that none of your private Binance data is exposed. Your financial data will remain confidential, and only the proof of eligibility will be shared for verification.
+        </p>
+
         <label htmlFor="loan-amount">
           Loan Amount (USDT):
           <input
@@ -153,13 +139,12 @@ const resub= async()=>{
         {loanStatus && <h3>{loanStatus}</h3>}
 
         <div className="repayment-details">
-          <h3>Repayment Details:</h3>
-          <p><strong>Loan Amount:</strong> {loanAmount} USDT</p>
-          <p><strong>Loan Term:</strong> {loanTerm} months</p>
-          <p>
-            <strong>Monthly Payment:</strong>
-            {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT
-          </p>
+          <h3>Repayment Details: </h3>
+          <p><strong>Loan Amount: </strong> {loanAmount} USDT</p>
+          <p><strong>Loan Term: </strong> {loanTerm} months</p>
+          <p><strong>Monthly Payment: </strong> {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT</p>
+          <p><strong>Total Repayment: </strong> {(calculateMonthlyPayment(loanAmount, loanTerm) * loanTerm).toFixed(2)} USDT</p>
+          <p><strong>Interest Rate: </strong> 5%</p>
         </div>
 
         {result && (
@@ -167,11 +152,12 @@ const resub= async()=>{
             <h1>Loan Approved: {loanAmount} USDT</h1>
             <h2>Term: {loanTerm} Months</h2>
             <h3>Monthly Payment: {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT</h3>
+            <h3>Total Repayment: {(calculateMonthlyPayment(loanAmount, loanTerm) * loanTerm).toFixed(2)} USDT</h3>
+            <h3>Interest Rate: 5%</h3>  
           </div>
         )}
         
       </form>
-      <button onClick={()=>resub()}>test</button>
     </div>
   );
 };

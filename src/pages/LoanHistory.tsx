@@ -4,6 +4,7 @@ import { BASE_URL } from '../constants';
 import Loader from '../components/Loader';
 import { useNavigate } from 'react-router-dom';
 import '../styles/LoanHistory.css';
+import moment from 'moment';
 
 const LoanHistory = () => {
   const [loans, setLoans] = useState([]);
@@ -57,7 +58,7 @@ const LoanHistory = () => {
               onClick={() => handleLoanClick(loan.id)} // Add onClick handler
             >
               <div className="loan-detail">
-                <strong>Loan Amount:</strong> ${loan.loanAmount.toFixed(2)}
+                <strong>Loan Amount:</strong> ${loan.loanAmount }
               </div>
               <div className="loan-detail">
                 <strong>Loan Term:</strong> {loan.loanTerm} months
@@ -66,7 +67,10 @@ const LoanHistory = () => {
                 <strong>Status:</strong> {loan.loanStatus || 'Pending'}
               </div>
               <div className="loan-detail">
-                <strong>Total Repayment:</strong> ${loan.loanDetails.totalRepayment.toFixed(2)}
+                <strong>Total Repayment:</strong> ${loan.loanDetails.totalRepayment }
+              </div>
+              <div className="loan-detail">
+                <strong>Date Created:</strong>   {moment(loan.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
               </div>
             </li>
           ))}

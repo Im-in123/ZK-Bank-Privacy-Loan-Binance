@@ -1,11 +1,12 @@
 /* LoanRequest.css */
 .loan-form-container {
-    max-width: 500px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
   }
   
   .loan-form-container h3 {
@@ -32,7 +33,7 @@
   .loan-form-container button {
     width: 100%;
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: black;
     color: white;
     font-size: 18px;
     border: none;

@@ -6,10 +6,10 @@ import Footer from "./components/Footer";
 import SignUp from "./pages/Signup";
 import Login from "./pages/Login";
 import LoanHistory from "./pages/LoanHistory";
-import Dashboard from "./pages/Dashboard";
-import LoanDetails from "./pages/LoanDetail";
+import Dashboard from "./pages/Dashboard"; 
 import LoanRequest from "./pages/LoanRequest";
 import AuthWrapper from "./utils/AuthWrapper";  
+import LoanDetail from "./pages/LoanDetail";
 
 const Router = () => {
   return (
@@ -33,7 +33,7 @@ const Router = () => {
             path="/loans/:id"
             element={
               <AuthWrapper>
-                <LoanDetails />
+                <LoanDetail />
               </AuthWrapper>
             }
           />
