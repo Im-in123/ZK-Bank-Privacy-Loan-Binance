@@ -1,34 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../constants";
 
 const LoanDetails = () => {
-  const { id } = useParams();
+  const { loanId } = useParams(); // Get loanId from URL parameters
   const [loan, setLoan] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchLoanDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/loans/${id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        const response = await axios.get(`${BASE_URL}/loans/${loanId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
-        setLoan(response.data);
+        setLoan(response.data.loan);
       } catch (err) {
-        console.error(err);
+        setError("Error fetching loan details");
       }
     };
 
     fetchLoanDetails();
-  }, [id]);
+  }, [loanId]);
 
-  if (!loan) return <p>Loading...</p>;
+  if (error) {
+    return <p className="error">{error}</p>;
+  }
 
   return (
     <div>
-      <h1>Loan Details</h1>
-      <p>Amount: {loan.loanAmount}</p>
-      <p>Status: {loan.loanStatus}</p>
-      <p>Details: {loan.loanDetails}</p>
+      <h2>Loan Details</h2>
+      {loan ? (
+        <div>
+          <p><strong>Loan ID:</strong> {loan.id}</p>
+          <p><strong>Loan Amount:</strong> ${loan.loanAmount}</p>
+          <p><strong>Loan Term:</strong> {loan.loanTerm} months</p>
+          <p><strong>Monthly Payment:</strong> ${loan.loanDetails.monthlyPayment}</p>
+          <p><strong>Total Repayment:</strong> ${loan.loanDetails.totalRepayment}</p>
+          <p><strong>Interest Rate:</strong> {loan.loanDetails.interestRate}%</p>
+        </div>
+      ) : (
+        <p>Loading loan details...</p>
+      )}
     </div>
   );
 };
