@@ -32,6 +32,9 @@ const Login = () => {
       setSuccess(response.data.message);
       // Dispatch setUser to store user data in Redux state
       dispatch(setUser(response.data.user)); // Assume response contains user object
+        // Set token in localStorage
+    localStorage.setItem('token', response.data.token); // Store the token received from the server
+
       // Redirect to Dashboard after successful login
       navigate('/dashboard'); // Change '/dashboard' to your desired route
     } catch (err) {

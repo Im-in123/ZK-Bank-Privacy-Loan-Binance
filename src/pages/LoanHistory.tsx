@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../constants';
 import Loader from '../components/Loader';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirecting
 
 const LoanHistory = () => {
   const [loans, setLoans] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize navigate for redirecting
 
   useEffect(() => {
     const fetchLoanHistory = async () => {
@@ -14,19 +16,26 @@ const LoanHistory = () => {
       try {
         const response = await axios.get(`${BASE_URL}/loans/history`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming you're using JWT
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Send token in the header
           },
         });
         setLoans(response.data.loans);
       } catch (err) {
-        setError(err.response?.data?.message || 'Error fetching loan history');
+        console.log("error:", error)
+        if (err.response?.status === 401) {
+          // If token is expired or invalid, log the user out
+          // localStorage.removeItem('token');
+          // navigate('/login'); // Redirect to login page
+        } else {
+          setError(err.response?.data?.message || 'Error fetching loan history');
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchLoanHistory();
-  }, []);
+  }, [navigate]); // Run effect when the component mounts
 
   return (
     <div className="loan-history-container">

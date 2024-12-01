@@ -27,6 +27,7 @@ const requestLoan = async (req, res) => {
       loan,
     });
   } catch (err) {
+    console.log("error:", err)
     res.status(500).json({
       message: "Error creating loan request",
       error: err.message,
@@ -46,6 +47,7 @@ const getLoanHistory = async (req, res) => {
       loans,
     });
   } catch (err) {
+    console.log("error:", err)
     res.status(500).json({
       message: "Error fetching loan history",
       error: err.message,
@@ -69,6 +71,7 @@ const getLoanDetails = async (req, res) => {
       loan,
     });
   } catch (err) {
+    console.log("error:", err)
     res.status(500).json({
       message: "Error fetching loan details",
       error: err.message,

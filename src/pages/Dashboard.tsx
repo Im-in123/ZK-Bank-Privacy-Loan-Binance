@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const user = useSelector((state) => state.user.user);
@@ -7,7 +8,8 @@ const Dashboard = () => {
   return (
     <div>
       <h1>Welcome, {user ? user.username : 'Guest'}</h1>
-      {/* Render other user details */}
+      <Link to="/loan-history">View Loan History</Link>
+    <Link to="/loan-request">Apply for a Loan</Link>
     </div>
   );
 };

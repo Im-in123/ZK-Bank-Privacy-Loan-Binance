@@ -63,7 +63,7 @@ export const login = async (req, res) => {
 
         // Generate JWT
         const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-            expiresIn: '1h',
+            expiresIn: '5h',
         });
 
         res.status(200).json({ message: 'Login successful', token });
@@ -77,4 +77,30 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
     // Invalidate JWT or remove tokens from the client (e.g., clearing cookies)
     res.status(200).json({ message: 'Logout successful' });
+};
+
+/// Validate token logic
+export const validateToken = async (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).send({ message: 'No token provided' });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, JWT_SECRET);
+
+        // Fetch user data from the database using the decoded user ID
+        const user = await UserModel.findOne({ where: { id: decoded.id } });
+
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        // Return the user data
+        res.json({ user });
+    } catch (err) {
+        return res.status(401).send({ message: 'Invalid or expired token' });
+    }
 };
