@@ -39,6 +39,12 @@ const requestLoan = async (req, res) => {
 const getLoanHistory = async (req, res) => {
   const userId = req.userId;
 
+  if (!userId) {
+    return res.status(400).json({
+      message: "User ID not found",
+    });
+  }
+
   try {
     const loans = await LoanModel.findAll({
       where: { userId },
@@ -47,13 +53,14 @@ const getLoanHistory = async (req, res) => {
       loans,
     });
   } catch (err) {
-    console.log("error:", err)
+    console.log("Error:", err);
     res.status(500).json({
       message: "Error fetching loan history",
       error: err.message,
     });
   }
 };
+
 
 // Get loan details by loan ID
 const getLoanDetails = async (req, res) => {

@@ -2,7 +2,7 @@
 import jwt from "jsonwebtoken";
 
 const protect = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1]; // Assuming the token is passed as "Bearer <token>"
+  const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({
@@ -11,8 +11,9 @@ const protect = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId; // Assign the decoded userId to request object
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretkey');
+    console.log('Decoded JWT:', decoded); // Debugging log to see the decoded JWT
+    req.userId = decoded.id; // Use `id` instead of `userId`
     next();
   } catch (err) {
     res.status(401).json({
@@ -20,5 +21,6 @@ const protect = (req, res, next) => {
     });
   }
 };
+
 
 export { protect };
