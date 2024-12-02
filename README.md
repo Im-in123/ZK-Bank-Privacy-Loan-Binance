@@ -12,16 +12,21 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
 ## Live Application
 
 Check out the deployed application:  
-👉 **[Decentralized Disaster Relief Fund dApp](https://arbitrum-decentralized-disaster-relief-fund-dapp.vercel.app)**
+👉 1. **[Frontend: zk-bank-privacy-loan-binance](https://zk-bank-privacy-loan-binance.vercel.app/)**
+ 2. **[Backend: zk-bank-privacy-loan-binance](https://zk-bank-privacy-loan-binance.vercel.app/)**
 
 ---
+## My Deployed Smart Contract Address
+**Smart Contract Address:** 0xF8dC5472716f560c3704f5F95d2C2F077fCA8A3e  👉 [Contract Code](https://sepolia.arbiscan.io/address/0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5#code)
 
+---
 ## Video Demonstration
 
-📺 Watch a demo of the dApp:  
-👉 **[Video Demo](https://youtu.be/Wn921Ag4bjY)**
+📺 Watch a demo of the App:  
+👉 **[Video Demo]( )**
 
 ---
+
 
  
 ## Table of Contents
