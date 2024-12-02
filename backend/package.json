@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "app.js",
-  "scripts": {  
+  "scripts": {
     "start": "node app.js"
   },
   "type": "module",
@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@vercel/node": "^3.2.27",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
