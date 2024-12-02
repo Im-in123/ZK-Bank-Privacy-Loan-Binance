@@ -7,7 +7,7 @@ app.use(express.json());
 const { requestLoan, getLoanHistory, getLoanDetails } = require('../../controllers/loanController');
 
 // Protect middleware (if you have authentication):
-const { protect } = require('../middleware/authMiddleware');
+const { protect } = require('../../middleware/authMiddleware');
 
 app.post('/request', protect, requestLoan);
 app.get('/history', protect, getLoanHistory);
