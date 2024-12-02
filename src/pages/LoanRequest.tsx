@@ -63,7 +63,7 @@ const LoanRequest: React.FC = () => {
         return;
       }
 
-      const res = (await connector.launch(schemaId, recipient)) as ZkPassResponse;
+      const res = (await connector.launch(schemaId, recipient)) as any;
 
       const validatedResult = connector.verifyProofMessageSignature("evm", schemaId, res);
       if (!validatedResult) {

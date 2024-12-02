@@ -1,6 +1,5 @@
 // controllers/loanController.js
 import LoanModel from "../models/LoanModel.js";
-import UserModel from "../models/UserModel.js"; // Import user model for referencing
 
 /// Request a new loan
 const requestLoan = async (req, res) => {
