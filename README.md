@@ -36,8 +36,8 @@ Check out the deployed application:
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Im-in123/Ecommerce-with-Advanced-Redux-Toolkit-State-Management
-cd Ecommerce-with-Advanced-Redux-Toolkit-State-Management
+git clone https://github.com/Im-in123/ZK-Bank-Privacy-Loan-Binance
+cd ZK-Bank-Privacy-Loan-Binance
 ```
 ## 2. Creating a Custom Schema on zkPass
 
@@ -218,7 +218,7 @@ curl -L https://foundry.paradigm.xyz | bash
  - In the secret directory, create a .env file and add the following contents:
  ```bash
 SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/YOUR_INFURA_SEPOLIA_API_KEY
-PRIVATE_KEY=YOUR_PRIVATE_KEY
+PRIVATE_KEY=YOUR_PRIVATE_KEY   #metamask privatekey
 ```
 - Replace YOUR_INFURA_SEPOLIA_API_KEY and YOUR_PRIVATE_KEY with your actual values.
 
@@ -232,7 +232,7 @@ forge test -vvv --summary
 source .env
 forge script --chain sepolia script/Deployer.s.sol:Deployer --rpc-url ${SEPOLIA_RPC_URL} --broadcast -vvvv
 ```
- 
+5. Copy the deployed contract address in the terminal and the CONTRACT_ADDRESS it in the src/constants.js of the root directory with it
 
 
 
