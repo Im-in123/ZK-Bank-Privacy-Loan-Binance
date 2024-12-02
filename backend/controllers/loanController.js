@@ -1,5 +1,5 @@
 // controllers/loanController.js
-import LoanModel from "../models/LoanModel.js";
+const LoanModel = require("../models/LoanModel.js");
 
 /// Request a new loan
 const requestLoan = async (req, res) => {
@@ -106,4 +106,4 @@ console.log("loan id::",loanId )
   }
 };
 
-export { requestLoan, getLoanHistory, getLoanDetails };
+module.exports = { requestLoan, getLoanHistory, getLoanDetails };

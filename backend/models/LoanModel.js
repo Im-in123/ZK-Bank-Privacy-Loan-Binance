@@ -1,6 +1,6 @@
 // models/LoanModel.js
-import { DataTypes, Model } from "sequelize";
-import { sequelizeLoans } from "../database/db.js";
+const { DataTypes, Model } = require("sequelize");
+const { sequelizeLoans } = require("../database/db.js");
 
 class LoanModel extends Model {}
 
@@ -53,4 +53,4 @@ LoanModel.init(
   }
 );
 
-export default LoanModel;
+module.exports = LoanModel;

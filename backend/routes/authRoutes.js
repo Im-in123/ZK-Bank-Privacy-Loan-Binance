@@ -1,6 +1,6 @@
-// authRoutes.js
-import express from 'express';
-import { signup, login, logout, validateToken } from '../controllers/authController.js';
+const express = require('express');
+const { signup, login, logout, validateToken } = require('../controllers/authController.js');
+
 
 const authRouter = express.Router();
 
@@ -16,4 +16,5 @@ authRouter.post('/logout', logout);
 // Route for token validation
 authRouter.get('/validate-token', validateToken);
 
-export default authRouter;
+ 
+module.exports = authRouter;

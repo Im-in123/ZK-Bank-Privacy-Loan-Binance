@@ -1,11 +1,12 @@
 // app.js
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const authRoutes = require("./routes/authRoutes.js");
+const loanRoutes = require("./routes/loanRoutes.js");
 
-import authRoutes from "./routes/authRoutes.js"; // Import auth routes
-import loanRoutes from "./routes/loanRoutes.js"; // Import loan routes
 
+ 
 dotenv.config();
 const app = express();
 

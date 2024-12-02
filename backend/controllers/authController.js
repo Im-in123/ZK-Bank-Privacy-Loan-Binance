@@ -1,13 +1,13 @@
 // authController.js
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import UserModel from '../models/UserModel.js';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const UserModel = require('../models/UserModel.js');
 
 // Secret for JWT
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 // Signup logic
-export const signup = async (req, res) => {
+  const signup = async (req, res) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
@@ -41,7 +41,7 @@ export const signup = async (req, res) => {
 };
 
 // Login logic
-export const login = async (req, res) => {
+  const login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -74,13 +74,13 @@ export const login = async (req, res) => {
 };
 
 // Logout logic
-export const logout = (req, res) => {
+ const logout = (req, res) => {
     // Invalidate JWT or remove tokens from the client (e.g., clearing cookies)
     res.status(200).json({ message: 'Logout successful' });
 };
 
 /// Validate token logic
-export const validateToken = async (req, res) => {
+  const validateToken = async (req, res) => {
     const token = req.headers['authorization']?.split(' ')[1];
 
     if (!token) {
@@ -104,3 +104,5 @@ export const validateToken = async (req, res) => {
         return res.status(401).send({ message: 'Invalid or expired token' });
     }
 };
+
+module.exports = { signup, login, logout, validateToken };

@@ -1,5 +1,5 @@
 // middleware/authMiddleware.js
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
 const protect = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -23,4 +23,4 @@ const protect = (req, res, next) => {
 };
 
 
-export { protect };
+module.exports = { protect };

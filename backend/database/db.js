@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+const { Sequelize } = require("sequelize");
 
 const sequelizeUsers = new Sequelize({
 	database: "users",
@@ -38,4 +38,4 @@ sequelizeLoans
     })
     .catch((err) => console.error("Unable to connect to loans database: ", err));
 
-export {  sequelizeUsers,  sequelizeLoans };
+module.exports = { sequelizeUsers, sequelizeLoans };
