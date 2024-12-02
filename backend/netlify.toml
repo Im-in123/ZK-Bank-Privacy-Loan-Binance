@@ -1,6 +1,6 @@
 [build]
   functions = "netlify/functions"  # Directory for Netlify functions
-  publish = "public"  # Optional: directory for static files
+   
 
 [context.production.environment]
   NODE_ENV = "production"
