@@ -211,14 +211,14 @@ npm start
 ## 5. Smart Contract Setup
 
  
-1. nstall Foundry:
+1. Install Foundry:
 
  - In the root folder, run the following command to install Foundry:
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
 ```
-
-2. Create .env File for Smart Contract:
+2. Cd into the secret folder
+3. Create .env File for Smart Contract:
 
  - In the secret directory, create a .env file and add the following contents:
  ```bash
@@ -227,17 +227,17 @@ PRIVATE_KEY=YOUR_PRIVATE_KEY   #metamask privatekey
 ```
 - Replace YOUR_INFURA_SEPOLIA_API_KEY and YOUR_PRIVATE_KEY with your actual values.
 
-3. Test the Smart Contract:
+4. Test the Smart Contract:
  ```bash
 forge test -vvv --summary
 ```
 
-4. Deploy the Smart Contract:
+5. Deploy the Smart Contract:
  ```bash
 source .env
 forge script --chain sepolia script/Deployer.s.sol:Deployer --rpc-url ${SEPOLIA_RPC_URL} --broadcast -vvvv
 ```
-5. Copy the deployed contract address in the terminal and the CONTRACT_ADDRESS it in the src/constants.js of the root directory with it
+6. Copy the deployed contract address in the terminal and the CONTRACT_ADDRESS it in the src/constants.js of the root directory with it
 
 
 
