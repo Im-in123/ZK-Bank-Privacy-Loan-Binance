@@ -22,10 +22,10 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
 ---
 
 ## Live Application
-NB: Live application might be down if hosting platform is down or upgrading.
-Check out the deployed application:  
+NB: Live application might be down if hosting platform is down or upgrading. Or might not work as expected due to extra configurations on the hosting platforms(In case emergency please run locally):  
 👉 1. **[Frontend:](https://zk-bank-privacy-loan-binance.vercel.app/)**
- 2. **[Backend Api:](https://zk-bank-privacy-loan-binance-api.vercel.app/)**
+ 2. **[Backend Api:](https://zkpass-binance-api.vercel.app/)**
+ 
 
 ---
 ## Zkpass Custom Schema Json
