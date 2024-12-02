@@ -51,7 +51,7 @@ const LoanRequest: React.FC = () => {
       const recipient = await signer?.getAddress();
 
       if (!recipient) {
-        toast.error("Ethereum wallet is not connected.");
+        toast.error("Ethereum wallet is not connected. Install metamask!");
         return;
       }
 
@@ -64,7 +64,7 @@ const LoanRequest: React.FC = () => {
         return;
       }
 
-      toast.success("ZKProof Verified Successfully");
+      alert("ZKProof Verified Successfully");
       const taskId = ethers.hexlify(ethers.toUtf8Bytes(res.taskId)) as `0x${string}`;
       const schemaIdHex = ethers.hexlify(ethers.toUtf8Bytes(SCHEMA_ID)) as `0x${string}`;
 

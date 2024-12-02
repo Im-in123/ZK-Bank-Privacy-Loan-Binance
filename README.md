@@ -9,23 +9,106 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
 
 ---
 
-## Live Application
+## Video Demonstration
 
-Check out the deployed application:  
-👉 1. **[Frontend: zk-bank-privacy-loan-binance](https://zk-bank-privacy-loan-binance.vercel.app/)**
- 2. **[Backend: zk-bank-privacy-loan-binance](https://zk-bank-privacy-loan-binance.vercel.app/)**
+📺 Watch a demo of the App:  
+👉 **[Video Demo](https://youtu.be/5rwcwSivJtc)**
 
 ---
 ## My Deployed Smart Contract Address
 **Smart Contract Address:** 0xF8dC5472716f560c3704f5F95d2C2F077fCA8A3e  👉 [Contract Code](https://sepolia.arbiscan.io/address/0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5#code)
 
----
-## Video Demonstration
-
-📺 Watch a demo of the App:  
-👉 **[Video Demo]( )**
 
 ---
+
+## Live Application
+NB: Live application might be down if hosting platform is down or upgrading.
+Check out the deployed application:  
+👉 1. **[Frontend:](https://zk-bank-privacy-loan-binance.vercel.app/)**
+ 2. **[Backend Api:](https://zk-bank-privacy-loan-binance.vercel.app/)**
+
+---
+## Zkpass Custom Schema Json
+ 
+   ```json
+   {
+     "issuer": "Binance",
+     "desc": "This schema verifies a user's eligibility for a crypto-backed loan on the ZK-Crypto Wealth & Loan Platform by combining three key factors from their Binance account: Binance Earn Balance, and 24-Hour Active Balance.",
+     "website": "https://www.binance.com/my/dashboard",
+     "breakWall": true,
+     "APIs": [
+       {
+         "host": "www.binance.com",
+         "intercept": {
+           "url": "bapi/accounts/v1/private/account/user/base-detail",
+           "method": "POST"
+         },
+         "nullifier": "data|userId"
+       },
+       {
+         "host": "www.binance.com",
+         "intercept": {
+           "url": "bapi/asset/v2/private/asset-service/wallet/balance",
+           "method": "GET"
+         },
+         "override": {
+           "query": [
+             {
+               "quoteAsset": "USDT",
+               "verify": true
+             },
+             {
+               "needBalanceDetail": "false"
+             }
+           ]
+         },
+         "assert": [
+           {
+             "key": "data|?=0|accountType",
+             "value": "SAVING",
+             "operation": "="
+           },
+           {
+             "key": "data|?=0|balance",
+             "value": "1.00000000",
+             "operation": ">"
+           }
+         ]
+       },
+       {
+         "host": "www.binance.com",
+         "intercept": {
+           "url": "bapi/apex/v2/private/apex/marketing/wallet/userHistoryAssets",
+           "method": "POST"
+         },
+         "override": {
+           "body": [
+             {
+               "recentDays": "1",
+               "verify": true
+             }
+           ]
+         },
+         "assert": [
+           {
+             "key": "data|6|total",
+             "value": "1.00000000",
+             "operation": ">"
+           }
+         ]
+       }
+     ],
+     "HRCondition": [
+       "Verifies the user's eligibility for a crypto-backed loan based on two key factors from their Binance account: Earn Balance and Active Balance in the last 24 hours. All verifications are performed using zkProofs to ensure privacy."
+     ],
+     "tips": {
+       "message": "When you successfully log in, please click the 'Start' button to initiate the verification process."
+     }
+   }
+   ```
+---
+
+
 
 
  

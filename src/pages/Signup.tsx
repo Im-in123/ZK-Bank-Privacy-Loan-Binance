@@ -47,7 +47,7 @@ const Signup = () => {
       dispatch(setUser(response.data.user)); // Assume response contains user object
       toast.success("Account created successfully! Login to continue!")
     } catch (err: any) { // Use 'any' here if the error type is dynamic
-      setError(err.response?.data?.message || 'An error occurred');
+      setError(err.response?.data?.message || 'An error occurred | Backend server might be down!');
     } finally {
       setIsLoading(false);
     }

@@ -42,7 +42,7 @@ const Login: React.FC = () => {
       // Redirect to Dashboard after successful login
       navigate('/'); // Change '/dashboard' to your desired route
     } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred');
+      setError(err.response?.data?.message || 'An error occurred | Backend server might be down!');
     } finally {
       setIsLoading(false);
     }
