@@ -7,18 +7,39 @@ The app integrates with the **Binance predefined schemas**, specifically the **E
 
 With **zkPass** and these **Binance schemas**, users can maintain their financial privacy while accessing decentralized loan services.
 
+---
 
+## Live Application
 
- 
-## Table of Contents
-1. [Creating a Custom Schema on zkPass](#1-creating-a-custom-schema-on-zkpass)
-2. [Frontend Setup](#2-frontend-setup)
-3. [Backend Setup](#3-backend-setup)
-4. [Smart Contract Setup](#4-smart-contract-setup)
+Check out the deployed application:  
+👉 **[Decentralized Disaster Relief Fund dApp](https://arbitrum-decentralized-disaster-relief-fund-dapp.vercel.app)**
 
 ---
 
-## 1. Creating a Custom Schema on zkPass
+## Video Demonstration
+
+📺 Watch a demo of the dApp:  
+👉 **[Video Demo](https://youtu.be/Wn921Ag4bjY)**
+
+---
+
+ 
+## Table of Contents
+1. [Clone the Repository](#1-clone-the-repository)
+2. [Creating a Custom Schema on zkPass](#2-creating-a-custom-schema-on-zkpass)
+3. [Frontend Setup](#3-frontend-setup)
+4. [Backend Setup](#4-backend-setup)
+5. [Smart Contract Setup](#5-smart-contract-setup)
+
+---
+ 
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/Im-in123/Ecommerce-with-Advanced-Redux-Toolkit-State-Management
+cd Ecommerce-with-Advanced-Redux-Toolkit-State-Management
+```
+## 2. Creating a Custom Schema on zkPass
 
 ### Steps to Create a Custom Schema:
 
@@ -120,103 +141,100 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
    - Once approved, zkPass will provide you with a schemaId which is required for integration 
      with your app. Make sure to copy the schemaId.
  
-## 2. Frontend Setup
+## 3. Frontend Setup
 
-Prerequisites:
-Ensure you are using Chromium or Chrome as the zkPass Schema Validator and Transgate extensions are required.
-Install the necessary extensions from the Chrome Web Store:
-zkPass Schema Validator
-zkPass Transgate
-Steps to Set Up the Frontend:
-Clone the Repository:
+1. Prerequisites:
+  - Ensure you are using Chromium or Chrome as the zkPass Schema Validator and Transgate extensions are required.
+  - Install the necessary extensions from the Chrome Web Store:
+  
+- [zkPass Schema Validator](https://chromewebstore.google.com/detail/zkpass-schema-validator/kpcbjghknfclbkejkdllpjhhheppaoca)
+- [zkPass Transgate](https://chromewebstore.google.com/detail/zkpass-transgate/afkoofjocpbclhnldmmaphappihehpma)
+ 
 
-Navigate to the root directory of the project:
-bash
-Copy code
-cd /path/to/your/project
-Install Dependencies:
-
-Run the following command to install required dependencies:
-bash
-Copy code
+2. Navigate to the root directory of the project:
+ 
+ - Run the following command to install required dependencies:
+```bash
 npm install
-Configure constants.js:
+```
 
-Navigate to src/ and open constants.js. Ensure the following fields are populated:
+3. Configure constants.js:
+
+  - Navigate to src/ and open constants.js. Ensure the following fields are populated:
 javascript
-Copy code
+```bash
 export const BASE_URL = "https://your-backend-url.com";
 export const CONTRACT_ADDRESS = "0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5";
 export const APP_ID = "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
 export const SCHEMA_ID = "7b7b31ecbc654213ba7fc189b01d21f3";
+```
 Replace BASE_URL with the URL of your backend server.
 Start the Frontend Server:
 
-Run the following command to start the frontend server:
-bash
-Copy code
+4. Run the following command to start the frontend server:
+```bash
 npm run dev
-The frontend should now be accessible at http://localhost:3000.
-
-3. Backend Setup
-Steps to Set Up the Backend:
-Navigate to the Backend Directory:
-
-From the root folder, navigate to the backend directory:
-bash
-Copy code
-cd backend
-Create .env File:
-
-Create a .env file and populate it with the following information:
-plaintext
-Copy code
+```
+ 
+## 4. Backend Setup
+1. Go back to the root of the  project
+2. Navigate to the backend Directory
+3. Create .env File:
+ - Create a .env file and populate it with the following information:
+```bash
 PORT=your_port_number
 JWT_SECRET=your_jwt_secret
-Install Dependencies:
+```
 
-Run the following command to install the necessary backend dependencies:
-bash
-Copy code
+4. Install Dependencies:
+
+   - Run the following command to install the necessary backend dependencies:
+```bash
 npm install
-Start the Backend Server:
-
-Start the backend server:
-bash
-Copy code
+```
+ 
+5. Start the Backend Server:
+```bash
 npm start
-Update constants.js:
+```
 
-Copy the URL of the running backend server and replace BASE_URL in src/constants.js with the copied URL.
-4. Smart Contract Setup
-Steps to Test and Deploy the Smart Contract:
-Install Foundry:
+7. Update constants.js:
+ 
+  - Copy the URL of the running backend server and replace BASE_URL in src/constants.js with the copied URL.
 
-In the root folder, run the following command to install Foundry:
-bash
-Copy code
+ 
+## 5. Smart Contract Setup
+
+ 
+1. nstall Foundry:
+
+ - In the root folder, run the following command to install Foundry:
+```bash
 curl -L https://foundry.paradigm.xyz | bash
-Create .env File for Smart Contract:
+```
 
-In the secret directory, create a .env file and add the following contents:
-plaintext
-Copy code
+2. Create .env File for Smart Contract:
+
+ - In the secret directory, create a .env file and add the following contents:
+ ```bash
 SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/YOUR_INFURA_SEPOLIA_API_KEY
 PRIVATE_KEY=YOUR_PRIVATE_KEY
-Test the Smart Contract:
+```
+- Replace YOUR_INFURA_SEPOLIA_API_KEY and YOUR_PRIVATE_KEY with your actual values.
 
-Run the following command to test the smart contract:
-bash
-Copy code
+3. Test the Smart Contract:
+ ```bash
 forge test -vvv --summary
-Deploy the Smart Contract:
+```
 
-To deploy the contract to Sepolia, run:
-bash
-Copy code
+4. Deploy the Smart Contract:
+ ```bash
 source .env
 forge script --chain sepolia script/Deployer.s.sol:Deployer --rpc-url ${SEPOLIA_RPC_URL} --broadcast -vvvv
-Replace YOUR_INFURA_SEPOLIA_API_KEY and YOUR_PRIVATE_KEY with your actual values.
+```
+ 
+
+
 
 
    
