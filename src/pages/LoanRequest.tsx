@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import axios from "axios";
 import TransgateConnect from "@zkpass/transgate-js-sdk";
 import { ethers } from "ethers";
@@ -16,7 +16,10 @@ const LoanRequest: React.FC = () => {
   const [loanStatus, setLoanStatus] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const { writeContractAsync } = useWriteGetSecretAssignSecret();
+  useEffect(() => {
+    toast.info("🚨 Important: For testing purposes, you must have more than $1 USD in both your Binance Earn Balance and your Binance Balance in the Last 24 Hours for the verification to pass. 🚨");
 
+  }, []); 
   const calculateMonthlyPayment = (amount: number, term: number) => {
     const interestRate = 0.05;
     const monthlyRate = interestRate / 12;
