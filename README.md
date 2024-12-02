@@ -16,7 +16,7 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
 
 ---
 ## My Deployed Smart Contract Address
-**Smart Contract Address:** 0xF8dC5472716f560c3704f5F95d2C2F077fCA8A3e  👉 [Contract Code](https://sepolia.arbiscan.io/address/0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5#code)
+**Smart Contract Address:** 👉  0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5    
 
 
 ---
@@ -25,7 +25,7 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
 NB: Live application might be down if hosting platform is down or upgrading.
 Check out the deployed application:  
 👉 1. **[Frontend:](https://zk-bank-privacy-loan-binance.vercel.app/)**
- 2. **[Backend Api:](https://zk-bank-privacy-loan-binance.vercel.app/)**
+ 2. **[Backend Api:](https://zk-bank-privacy-loan-binance-api.vercel.app/)**
 
 ---
 ## Zkpass Custom Schema Json
