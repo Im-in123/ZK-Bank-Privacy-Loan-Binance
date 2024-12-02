@@ -14,7 +14,13 @@ app.use(express.json());
 
 app.use("/auth", authRoutes); // Use auth routes
 app.use("/loans", loanRoutes); // Use loan routes
-
+app.get("/", (req, res) => {
+    res.json({
+      message: "Welcome to ZK-Bank Privacy Loan (Binance) API!",
+      availableEndpoints: ["/auth", "/loans"]
+    });
+  });
+  
 
 
 const PORT = process.env.PORT || 5000;
