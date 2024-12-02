@@ -1,140 +1,182 @@
+ZK-Bank Privacy Loan (Binance) Setup Guide
+This guide walks you through the process of setting up ZK-Bank Privacy Loan (Binance), which integrates zkPass for privacy-preserving creditworthiness verification and loan applications. The following sections will guide you in creating a custom schema, setting up the frontend and backend, and deploying the smart contract.
 
+Table of Contents
+Creating a Custom Schema on zkPass
+Frontend Setup
+Backend Setup
+Smart Contract Setup
+1. Creating a Custom Schema on zkPass
+Steps to Create a Custom Schema:
+Visit zkPass Developer Portal:
 
+Go to zkPass Developer Portal.
+Sign up or log in if you haven’t already.
+Create a New App:
 
-The Original Bounty Idea:
-The zkPass bounty focuses on using Zero-Knowledge Proofs (ZKPs) to prove creditworthiness or transaction validity without revealing full financial histories. The main goal is to protect users' privacy while enabling trusted credit scoring or financial transaction validation without exposing sensitive details.
+Click on Create New App and make sure to copy the appId as you will need it for the frontend integration.
+Add a Custom Schema:
 
-What We've Done So Far:
-Smart Contract (GetSecret): You've created a simple smart contract (GetSecret) to store and retrieve secrets. While this is a useful starting point for storing and verifying user data (like financial credentials), the actual functionality required by the zkPass bounty should be expanded to:
+After creating the app, click on Add Schema and select Custom Schema.
+Set the schema's name to Binance Financial Data.
+Set the category to Finance.
+Define the Schema JSON:
 
-Verify a user’s creditworthiness or transaction history based on zero-knowledge proofs (ZKPs).
-Use the zkPass Transgate integration to prove these credentials without disclosing sensitive information.
-Frontend: The frontend you've built so far helps users interact with a smart contract, request verification, and display results (including secrets). However, the main functionality missing is:
+Set the schema JSON to:
 
-Integrating zkPass for ZKP validation to prove transaction validity or creditworthiness, which is the core of your application.
-Transaction history or credit scoring system: Currently, the system doesn’t show transaction history or how it determines creditworthiness based on past behavior.
-Schema Creation: You’ve created a custom schema, but it’s still unclear how the zkPass schema ties into proving transaction validity or creditworthiness based on blockchain data. The schema should define the conditions under which a user’s creditworthiness can be verified (for example, having a minimum number of transactions or a particular score).
+json
+Copy code
+{
+  "issuer": "Binance",
+  "desc": "This schema verifies a user's eligibility for a crypto-backed loan on the ZK-Crypto Wealth & Loan Platform by combining two key factors from their Binance account: Earn Balance and 24-Hour Active Balance.",
+  "website": "https://www.binance.com/my/dashboard",
+  "breakWall": true,
+  "APIs": [
+    {
+      "host": "www.binance.com",
+      "intercept": {
+        "url": "bapi/accounts/v1/private/account/user/base-detail",
+        "method": "POST"
+      },
+      "nullifier": "data|userId"
+    },
+    {
+      "host": "www.binance.com",
+      "intercept": {
+        "url": "bapi/asset/v2/private/asset-service/wallet/balance",
+        "method": "GET"
+      },
+      "override": {
+        "query": [
+          { "quoteAsset": "USDT", "verify": true },
+          { "needBalanceDetail": "false" }
+        ]
+      },
+      "assert": [
+        { "key": "data|?=0|accountType", "value": "SAVING", "operation": "=" },
+        { "key": "data|?=0|balance", "value": "1.00000000", "operation": ">" }
+      ]
+    },
+    {
+      "host": "www.binance.com",
+      "intercept": {
+        "url": "bapi/apex/v2/private/apex/marketing/wallet/userHistoryAssets",
+        "method": "POST"
+      },
+      "override": {
+        "body": [
+          { "recentDays": "1", "verify": true }
+        ]
+      },
+      "assert": [
+        { "key": "data|6|total", "value": "1.00000000", "operation": ">" }
+      ]
+    }
+  ],
+  "HRCondition": [
+    "Verifies the user's eligibility for a crypto-backed loan based on two key factors from their Binance account: Earn Balance and Active Balance in the last 24 hours. All verifications are performed using zkProofs to ensure privacy."
+  ],
+  "tips": {
+    "message": "When you successfully log in, please click the 'Start' button to initiate the verification process."
+  }
+}
+Submit the Schema:
 
-What’s Missing to Match the Original Bounty Concept:
-To fully match the bounty’s original idea, you’ll need to:
+Submit the schema for validation. Once approved, zkPass will provide you with a schemaId which is required for integration with your app. Make sure to copy the schemaId.
+2. Frontend Setup
+Prerequisites:
+Ensure you are using Chromium or Chrome as the zkPass Schema Validator and Transgate extensions are required.
+Install the necessary extensions from the Chrome Web Store:
+zkPass Schema Validator
+zkPass Transgate
+Steps to Set Up the Frontend:
+Clone the Repository:
 
-Define a Creditworthiness/Transaction Verification Smart Contract:
+Navigate to the root directory of the project:
+bash
+Copy code
+cd /path/to/your/project
+Install Dependencies:
 
-This contract should take into account factors like transaction history, volume, and consistency, and calculate a credit score.
-It should allow zkPass to prove whether the user qualifies for a loan, credit, or verification based on their transaction data without revealing the actual transaction details.
-Implement Zero-Knowledge Proofs (ZKPs) for Transaction Verification:
+Run the following command to install required dependencies:
+bash
+Copy code
+npm install
+Configure constants.js:
 
-zkPass will generate ZKPs that validate the user’s creditworthiness or transaction history without revealing sensitive data.
-The smart contract should then verify the proof without seeing the actual data, just the validity of the claim.
-zkPass Transgate will be used to facilitate this proof generation and validation process, ensuring that no financial history is exposed.
-Integrate zkPass Schema with Blockchain Data:
+Navigate to src/ and open constants.js. Ensure the following fields are populated:
+javascript
+Copy code
+export const BASE_URL = "https://your-backend-url.com";
+export const CONTRACT_ADDRESS = "0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5";
+export const APP_ID = "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
+export const SCHEMA_ID = "7b7b31ecbc654213ba7fc189b01d21f3";
+Replace BASE_URL with the URL of your backend server.
+Start the Frontend Server:
 
-You’ll need to define a custom schema that incorporates conditions for creditworthiness or transaction validity.
-The schema should detail what data needs to be validated (e.g., number of transactions, credit score, etc.) and the conditions under which the proof is considered valid.
-Link Backend with zkPass:
+Run the following command to start the frontend server:
+bash
+Copy code
+npm run dev
+The frontend should now be accessible at http://localhost:3000.
 
-You will need a backend API or blockchain functions that interact with the zkPass system to generate proofs, verify conditions, and integrate with the frontend. This backend will:
-Query transaction history (from blockchain or external sources).
-Calculate or fetch the credit score.
-Communicate with zkPass to generate and verify zero-knowledge proofs.
-Steps to Align With the Bounty:
-Enhance the Smart Contract:
+3. Backend Setup
+Steps to Set Up the Backend:
+Navigate to the Backend Directory:
 
-Create a more comprehensive smart contract to calculate and verify creditworthiness or transaction validity. It should support zkPass’s ability to validate the user’s eligibility through zero-knowledge proofs.
-Create a ZKP Proof Generation Process:
+From the root folder, navigate to the backend directory:
+bash
+Copy code
+cd backend
+Create .env File:
 
-Integrate zkPass Transgate into your backend or smart contract to generate zero-knowledge proofs for creditworthiness.
-Users will request proof of their financial status, and zkPass will ensure the proof is valid without revealing any financial details.
-Integrate Frontend for User Interaction:
+Create a .env file and populate it with the following information:
+plaintext
+Copy code
+PORT=your_port_number
+JWT_SECRET=your_jwt_secret
+Install Dependencies:
 
-The frontend should allow the user to input their financial information (transactions, etc.), generate a proof via zkPass, and submit it to the smart contract for verification.
-The frontend should handle the generation of proof and communicate with the smart contract or backend for validation.
-Test the Full Flow:
+Run the following command to install the necessary backend dependencies:
+bash
+Copy code
+npm install
+Start the Backend Server:
 
-Once all components are set up, test the entire flow: from generating ZKPs with zkPass to submitting them to the smart contract for validation and displaying the result to the user.
-Conclusion:
-The work you’ve done so far is foundational, but to fully match the zkPass bounty’s vision of privacy-first financial verification, you’ll need to:
+Start the backend server:
+bash
+Copy code
+npm start
+Update constants.js:
 
-Focus more on creditworthiness and transaction validation through ZKPs.
-Implement zkPass schemas to validate transactions or credit scores without exposing the user’s sensitive data.
-Would you like detailed guidance on how to implement these next steps?
+Copy the URL of the running backend server and replace BASE_URL in src/constants.js with the copied URL.
+4. Smart Contract Setup
+Steps to Test and Deploy the Smart Contract:
+Install Foundry:
 
+In the root folder, run the following command to install Foundry:
+bash
+Copy code
+curl -L https://foundry.paradigm.xyz | bash
+Create .env File for Smart Contract:
 
+In the secret directory, create a .env file and add the following contents:
+plaintext
+Copy code
+SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/YOUR_INFURA_SEPOLIA_API_KEY
+PRIVATE_KEY=YOUR_PRIVATE_KEY
+Test the Smart Contract:
 
-###################################################
-From a layman’s perspective, here’s what the ZKBank app experience should look like when they access it on their PC, with the zkPass-powered system for verifying transaction validity or creditworthiness without disclosing sensitive information:
+Run the following command to test the smart contract:
+bash
+Copy code
+forge test -vvv --summary
+Deploy the Smart Contract:
 
-1. User Login/Introduction:
-Landing Page: When the user opens the app in their browser, they’re greeted with a simple and welcoming page explaining the purpose of the app, such as:
-"ZKBank: Secure and Private Financial Verification"
-A brief tagline like: "Verify your creditworthiness or financial transactions without exposing your personal data."
-Login Button:
-A button to connect to your Ethereum wallet (e.g., MetaMask, or any Web3 wallet).
-"Connect Wallet" button for authentication.
-Explanation of Zero-Knowledge Proofs: A non-technical explanation like, "We use cutting-edge privacy technology to ensure your data is never shared, but your eligibility is verified."
-2. Creating a ZKPass Profile:
-Profile Setup: After connecting the wallet, the user is prompted to create a zkPass profile:
-Basic information (e.g., email, name, and wallet address).
-The user might need to opt-in to share certain transaction data (without revealing actual details), which helps calculate their credit score or transaction history.
-A simple form or prompts explaining what data will be shared and what will remain private.
-3. Creditworthiness/Transaction Verification:
-Verification Request Form:
-The user is presented with a straightforward form, like: "Verify Your Creditworthiness" or "Verify Your Transaction History."
-Options could include:
-Check Credit Score: “Verify if you are eligible for a loan” (based on transaction history).
-Transaction Validation: “Verify the validity of this specific transaction” (e.g., proving that they have made a purchase or investment in a certain amount).
-Schema and App ID Inputs:
-Schema ID: The user may be prompted to enter a Schema ID (related to the credit verification criteria or transaction type).
-App ID: For different types of verifications or specific companies, the user might input the App ID (this links to predefined verification setups from third parties).
-4. Privacy Verification Process:
-zkPass Proof Generation:
-Behind the scenes, the app will generate a Zero-Knowledge Proof using the zkPass Transgate technology. This is invisible to the user but happens once they click “Submit.”
-They are not asked for private financial information but may have to prove a transaction, balance, or history.
-Example message: "We're generating a private proof to validate your eligibility."
-5. Proof Submission and Results:
-Submitting to Blockchain:
-Once the proof is generated, the user clicks “Submit,” and the proof is sent to the smart contract for validation.
-A message will show, "Verifying your eligibility," while the transaction is processed.
-Verification Outcome:
-After the proof is validated (usually within seconds), the user receives a result.
-Outcome messages could include:
-“You are eligible for a loan of X amount.”
-“Transaction is valid.”
-"Your credit score is A (based on the last 12 months of transactions)."
-A button could show a detailed summary or breakdown of how the verification was done (without revealing sensitive data).
-6. What’s Visible to the User?:
-The user will never see their full transaction history, account balances, or sensitive financial details.
-The app only shows the result of the verification, for example:
-“You are eligible for a loan” or “Transaction validated.”
-Optionally, a user could download a proof of their creditworthiness (a ZKP certificate) for use with other apps or institutions.
-7. Security and Privacy Assurance:
-The user is assured that no sensitive financial data (like transaction amounts, balances, or history) is exposed to anyone — it’s only the validation of the claim that gets verified.
-Example: “Your financial history remains private. We only verify that you meet the required criteria without seeing your actual data.”
-8. Potential Follow-up Actions:
-If the verification succeeds, the user might:
-Apply for a loan with the third-party institution.
-Share their proof with other services that require creditworthiness verification.
-The app could also prompt them with additional actions, such as updating their data or requesting further verifications.
-Frontend Walkthrough Example (Layman Perspective):
-Step-by-Step Flow:
-Welcome Page: "Welcome to ZKBank. A privacy-first way to verify your credit and transaction history."
-Connect Wallet: Button to connect your Ethereum wallet (MetaMask).
-Enter Information: “Please enter the Schema ID provided by your service” (e.g., a loan application).
-Generate ZKP: Behind the scenes, zkPass generates the proof.
-Submit and Verify: Click “Submit” to verify your eligibility.
-Result: "Your loan eligibility has been successfully verified!" (or other relevant results).
-Download Proof: Option to download a ZKP certificate.
-Summary for the Layman:
-From a user’s perspective, the app will look very simple and straightforward. They won’t need to understand the complexities of blockchain or zero-knowledge proofs — they’ll just interact with a user-friendly interface to verify their credit or transaction history securely. They won’t need to worry about the underlying technology because the privacy-first approach ensures that all the complex steps (like validating the proof) are handled behind the scenes.
-
-Next Steps for You:
-Refine Frontend UI: Make sure the user flow is easy to follow with clear instructions on what the user needs to do.
-Test the Flow: Simulate the entire verification process to ensure it’s smooth and understandable for a layman.
-Iterate Based on Feedback: Collect feedback from non-technical users to ensure the app is intuitive and easy to use.
-Let me know if you need help setting up these steps or further clarifying the user experience!
-
-
-
-
-
+To deploy the contract to Sepolia, run:
+bash
+Copy code
+source .env
+forge script --chain sepolia script/Deployer.s.sol:Deployer --rpc-url ${SEPOLIA_RPC_URL} --broadcast -vvvv
+Replace YOUR_INFURA_SEPOLIA_API_KEY and YOUR_PRIVATE_KEY with your actual values.
 

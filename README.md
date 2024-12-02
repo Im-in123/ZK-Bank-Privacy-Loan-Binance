@@ -1,98 +1,222 @@
-# React + TypeScript + Vite
+# ZK-Bank Privacy Loan (Binance)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+**ZK-Bank Privacy Loan (Binance)** is a decentralized application designed to enable privacy-preserving credit verification and loan applications using **zkPass**. By leveraging zero-knowledge proofs, users can prove their creditworthiness without revealing sensitive financial details. 
 
-Currently, two official plugins are available:
+The app integrates with the **Binance predefined schemas**, specifically the **Earn Balance** and **Balance in the Last 24 Hours**, to verify users' financial standing. These schemas are combined to generate a composite creditworthiness score, which is then used to approve or reject loan applications.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+With **zkPass** and these **Binance schemas**, users can maintain their financial privacy while accessing decentralized loan services.
 
 
 
+ 
+## Table of Contents
+1. [Creating a Custom Schema on zkPass](#1-creating-a-custom-schema-on-zkpass)
+2. [Frontend Setup](#2-frontend-setup)
+3. [Backend Setup](#3-backend-setup)
+4. [Smart Contract Setup](#4-smart-contract-setup)
+
+---
+
+## 1. Creating a Custom Schema on zkPass
+
+### Steps to Create a Custom Schema:
+
+1. **Visit zkPass Developer Portal:**
+   - Go to the [zkPass Developer Portal](https://dev.zkpass.org/).
+   - Sign up or log in if you haven’t already.
+
+2. **Create a New App:**
+   - Click on **Create New App** and make sure to copy the **appId**, as you will need it for the frontend integration.
+
+3. **Add a Custom Schema:**
+   - After creating the app, click on **Add Schema** and select **Custom Schema**.
+
+4. **Set the Schema Details:**
+   - Set the schema's **name** to `Binance Financial Data`.
+   - Set the **category** to `Finance`.
+
+5. **Define the Schema JSON:**
+   - Use the following JSON for the schema definition:
+   
+   ```json
+   {
+     "issuer": "Binance",
+     "desc": "This schema verifies a user's eligibility for a crypto-backed loan on the ZK-Crypto Wealth & Loan Platform by combining three key factors from their Binance account: Binance Earn Balance, and 24-Hour Active Balance.",
+     "website": "https://www.binance.com/my/dashboard",
+     "breakWall": true,
+     "APIs": [
+       {
+         "host": "www.binance.com",
+         "intercept": {
+           "url": "bapi/accounts/v1/private/account/user/base-detail",
+           "method": "POST"
+         },
+         "nullifier": "data|userId"
+       },
+       {
+         "host": "www.binance.com",
+         "intercept": {
+           "url": "bapi/asset/v2/private/asset-service/wallet/balance",
+           "method": "GET"
+         },
+         "override": {
+           "query": [
+             {
+               "quoteAsset": "USDT",
+               "verify": true
+             },
+             {
+               "needBalanceDetail": "false"
+             }
+           ]
+         },
+         "assert": [
+           {
+             "key": "data|?=0|accountType",
+             "value": "SAVING",
+             "operation": "="
+           },
+           {
+             "key": "data|?=0|balance",
+             "value": "1.00000000",
+             "operation": ">"
+           }
+         ]
+       },
+       {
+         "host": "www.binance.com",
+         "intercept": {
+           "url": "bapi/apex/v2/private/apex/marketing/wallet/userHistoryAssets",
+           "method": "POST"
+         },
+         "override": {
+           "body": [
+             {
+               "recentDays": "1",
+               "verify": true
+             }
+           ]
+         },
+         "assert": [
+           {
+             "key": "data|6|total",
+             "value": "1.00000000",
+             "operation": ">"
+           }
+         ]
+       }
+     ],
+     "HRCondition": [
+       "Verifies the user's eligibility for a crypto-backed loan based on two key factors from their Binance account: Earn Balance and Active Balance in the last 24 hours. All verifications are performed using zkProofs to ensure privacy."
+     ],
+     "tips": {
+       "message": "When you successfully log in, please click the 'Start' button to initiate the verification process."
+     }
+   }
+   ```
+5. **Submit Schema JSON:**
+   - Submit the schema for validation.
+   - Once approved, zkPass will provide you with a schemaId which is required for integration 
+     with your app. Make sure to copy the schemaId.
+ 
+## 2. Frontend Setup
+
+Prerequisites:
+Ensure you are using Chromium or Chrome as the zkPass Schema Validator and Transgate extensions are required.
+Install the necessary extensions from the Chrome Web Store:
+zkPass Schema Validator
+zkPass Transgate
+Steps to Set Up the Frontend:
+Clone the Repository:
+
+Navigate to the root directory of the project:
+bash
+Copy code
+cd /path/to/your/project
+Install Dependencies:
+
+Run the following command to install required dependencies:
+bash
+Copy code
+npm install
+Configure constants.js:
+
+Navigate to src/ and open constants.js. Ensure the following fields are populated:
+javascript
+Copy code
+export const BASE_URL = "https://your-backend-url.com";
+export const CONTRACT_ADDRESS = "0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5";
+export const APP_ID = "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
+export const SCHEMA_ID = "7b7b31ecbc654213ba7fc189b01d21f3";
+Replace BASE_URL with the URL of your backend server.
+Start the Frontend Server:
+
+Run the following command to start the frontend server:
+bash
+Copy code
+npm run dev
+The frontend should now be accessible at http://localhost:3000.
+
+3. Backend Setup
+Steps to Set Up the Backend:
+Navigate to the Backend Directory:
+
+From the root folder, navigate to the backend directory:
+bash
+Copy code
+cd backend
+Create .env File:
+
+Create a .env file and populate it with the following information:
+plaintext
+Copy code
+PORT=your_port_number
+JWT_SECRET=your_jwt_secret
+Install Dependencies:
+
+Run the following command to install the necessary backend dependencies:
+bash
+Copy code
+npm install
+Start the Backend Server:
+
+Start the backend server:
+bash
+Copy code
+npm start
+Update constants.js:
+
+Copy the URL of the running backend server and replace BASE_URL in src/constants.js with the copied URL.
+4. Smart Contract Setup
+Steps to Test and Deploy the Smart Contract:
+Install Foundry:
+
+In the root folder, run the following command to install Foundry:
+bash
+Copy code
 curl -L https://foundry.paradigm.xyz | bash
+Create .env File for Smart Contract:
 
-
-Now head to the root directory of your project. Head to the secret directory. Then create a .env file. Open the file and add the following contents.
-
+In the secret directory, create a .env file and add the following contents:
+plaintext
+Copy code
 SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/YOUR_INFURA_SEPOLIA_API_KEY
 PRIVATE_KEY=YOUR_PRIVATE_KEY
+Test the Smart Contract:
 
+Run the following command to test the smart contract:
+bash
+Copy code
+forge test -vvv --summary
+Deploy the Smart Contract:
+
+To deploy the contract to Sepolia, run:
+bash
+Copy code
 source .env
-forge script --chain sepolia script/Deployer.s.sol:DeployZKBank --rpc-url ${SEPOLIA_RPC_URL} --broadcast -vvvv
-forge script script/Deploy.s.sol --rpc-url $RPC_URL --private-key $PRIVATE_KEY
-forge script --chain sepolia script/DeployCreditworthinessVerifier.s.sol --rpc-url ${SEPOLIA_RPC_URL} --broadcast --private-key ${PRIVATE_KEY} -vvvv
-
-forge script script/DeployCreditworthinessAttestor.s.sol --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --broadcast
+forge script --chain sepolia script/Deployer.s.sol:Deployer --rpc-url ${SEPOLIA_RPC_URL} --broadcast -vvvv
+Replace YOUR_INFURA_SEPOLIA_API_KEY and YOUR_PRIVATE_KEY with your actual values.
 
 
-python3 -m http.server 5173
-npx @wagmi/cli generate
-
-frontend
-
-npm run dev 
-
-enable corepack for backend
-corepack enable
-
-
-
-
-
-
-
-zkbank/
-├── script/
-│   └── Deploy.s.sol      # Deploy script for the smart contract
-├── src/
-│   └── ZKBank.sol        # The smart contract code
-├── test/
-│   └── ZKBank.t.sol      # Test file for the smart contract
-├── foundry.toml          # Foundry configuration file
-├── .env                  # Environment variables (private key and RPC URL)
-└── README.md             # Project description (optional)
-
-
-0xD32D3eb93488d33D9C5c640CA4571A7b2D945769
+   

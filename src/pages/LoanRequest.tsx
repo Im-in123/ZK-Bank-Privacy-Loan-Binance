@@ -4,13 +4,10 @@ import axios from "axios";
 import TransgateConnect from "@zkpass/transgate-js-sdk";
 import { ethers } from "ethers";
 import { useWriteGetSecretAssignSecret } from "../generated";
-import { BASE_URL } from "../constants";
 import "../styles/LoanRequest.css";
 import { toast } from "react-toastify";
-
-const contractAddress = "0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5";
-const appId = "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
-const schemaId = "7b7b31ecbc654213ba7fc189b01d21f3";
+import { CONTRACT_ADDRESS, APP_ID, SCHEMA_ID, BASE_URL } from "../constants";
+ 
 
 
 const LoanRequest: React.FC = () => {
@@ -38,7 +35,7 @@ const LoanRequest: React.FC = () => {
     }
 
     try {
-      const connector = new TransgateConnect(appId);
+      const connector = new TransgateConnect(APP_ID);
       const isAvailable = await connector.isTransgateAvailable();
 
       if (!isAvailable) {
@@ -55,9 +52,9 @@ const LoanRequest: React.FC = () => {
         return;
       }
 
-      const res = (await connector.launch(schemaId, recipient)) as any;
+      const res = (await connector.launch(SCHEMA_ID, recipient)) as any;
 
-      const validatedResult = connector.verifyProofMessageSignature("evm", schemaId, res);
+      const validatedResult = connector.verifyProofMessageSignature("evm", SCHEMA_ID, res);
       if (!validatedResult) {
         toast.error("ZKProof verification failed.");
         setLoanStatus("Verification failed.");
@@ -66,7 +63,7 @@ const LoanRequest: React.FC = () => {
 
       toast.success("ZKProof Verified Successfully");
       const taskId = ethers.hexlify(ethers.toUtf8Bytes(res.taskId)) as `0x${string}`;
-      const schemaIdHex = ethers.hexlify(ethers.toUtf8Bytes(schemaId)) as `0x${string}`;
+      const schemaIdHex = ethers.hexlify(ethers.toUtf8Bytes(SCHEMA_ID)) as `0x${string}`;
 
       const chainParams = {
         taskId,
@@ -80,7 +77,7 @@ const LoanRequest: React.FC = () => {
       };
 
       await writeContractAsync({
-        address: contractAddress,
+        address: CONTRACT_ADDRESS,
         args: [chainParams],
       });
 
