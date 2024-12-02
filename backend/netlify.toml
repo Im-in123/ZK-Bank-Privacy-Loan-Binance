@@ -1,6 +1,0 @@
-[build]
-  functions = "netlify/functions"  # Directory for Netlify functions
-   
-
-[context.production.environment]
-  NODE_ENV = "production"
