@@ -12,14 +12,6 @@ const contractAddress = "0xf8B2Ec2c9bA0E473E3aE4682561229e0bCf274F5";
 const appId = "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
 const schemaId = "7b7b31ecbc654213ba7fc189b01d21f3";
 
-interface ZkPassResponse {
-  taskId: string;
-  uHash: string;
-  publicFieldsHash: string;
-  validatorAddress: string;
-  allocatorSignature: string;
-  validatorSignature: string;
-}
 
 const LoanRequest: React.FC = () => {
   const [loanAmount, setLoanAmount] = useState<number>(1000);
@@ -116,7 +108,7 @@ const LoanRequest: React.FC = () => {
   return (
     <div className="loan-form-container">
       <form className="form" onSubmit={requestVerifyMessage}>
-        <h3>Loan Request Credibility (Binance)</h3>
+        <h3>Loan Request Credibility (Binance Option)</h3>
 
         <label htmlFor="loan-amount">
           Loan Amount (USDT):
