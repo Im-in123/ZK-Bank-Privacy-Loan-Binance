@@ -4,8 +4,7 @@
   "main": "app.js",
   "scripts": {
     "format": "biome format --write",
-    "lint": "biome lint --write",
-    "serve": "node app.js",
+    "lint": "biome lint --write",   
     "build": "echo no build",
     "start": "node app.js"
   },
