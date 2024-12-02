@@ -2,10 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "app.js",
-  "scripts": {
-    "format": "biome format --write",
-    "lint": "biome lint --write",   
-    "build": "echo no build",
+  "scripts": {  
     "start": "node app.js"
   },
   "type": "module",
