@@ -55,8 +55,9 @@ const LoanCreate: React.FC = () => {
       }
 
       const res = (await connector.launch(SCHEMA_ID, recipient)) as any;
-
+      console.log('connector res::', res)
       const validatedResult = connector.verifyProofMessageSignature("evm", SCHEMA_ID, res);
+      console.log("validatedres::", validatedResult)
       if (!validatedResult) {
         toast.error("ZKProof verification failed.");
         setLoanStatus("Verification failed.");
