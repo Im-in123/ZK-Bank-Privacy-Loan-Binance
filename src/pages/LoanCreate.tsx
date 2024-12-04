@@ -37,6 +37,7 @@ const LoanCreate: React.FC = () => {
     }
 
     try {
+      console.log("APP_ID::", APP_ID)
       const connector = new TransgateConnect(APP_ID);
       const isAvailable = await connector.isTransgateAvailable();
 
