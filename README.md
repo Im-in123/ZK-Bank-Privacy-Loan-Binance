@@ -23,7 +23,8 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
 
 ## Live Application
 NB: Live application might be down if hosting platform is down or upgrading. Or might not work as expected due to extra configurations on the hosting platforms(In case emergency please run locally):  
-- NB: For some reason zpass verification dont work and throws "check app id -Cannot GET /sdk/config"  when the frontend is deployed on vercel . But works totally fine of codepsaces or local server. Im currently finding a fix for the vercel frontend.
+- NB: For some reason zpass verification dont work and throws "dev.zkpass.org/v1/sdk/config:1 
+Failed to load resource: the server responded with a status of 700 ()"  when the frontend is deployed on vercel . But works totally fine of codepsaces or local server. Im currently finding a fix for the vercel frontend.
 👉 1. **[Frontend:](https://zk-bank-privacy-loan-binance.vercel.app/)**
  2. **[Backend Api:](https://zk-bank-privacy-loan-binance-rtbo.vercel.app/)**
 

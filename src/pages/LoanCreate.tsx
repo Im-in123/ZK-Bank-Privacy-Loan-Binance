@@ -8,7 +8,6 @@ import "../styles/LoanRequest.css";
 import { toast } from "react-toastify";
 import { CONTRACT_ADDRESS, APP_ID, SCHEMA_ID, BASE_URL } from "../constants";
  
-
 const LoanCreate: React.FC = () => {
   const [loanAmount, setLoanAmount] = useState<number>(1000);
   const [loanTerm, setLoanTerm] = useState<number>(12);
@@ -104,8 +103,11 @@ const LoanCreate: React.FC = () => {
       setLoading(false);
     }
   };
+
+ 
 const rep =async()=>{
   try{
+    
   const loanData = { loanAmount:1000, loanTerm:12 };
   const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
