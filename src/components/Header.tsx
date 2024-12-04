@@ -42,7 +42,7 @@ const Header = () => {
               </li>
               <li>
                 <NavLink
-                  to="/loan-request"
+                  to="/loan-create"
                   className={({ isActive }) => (isActive ? "nav-link active-link" : "nav-link")}
                 >
                   <FaClipboardList className="nav-icon" /> Apply for Loan

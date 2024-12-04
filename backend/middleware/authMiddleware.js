@@ -1,5 +1,10 @@
 // middleware/authMiddleware.js
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+console.log("JWT SECRET:", JWT_SECRET); // Debugging log for JWT secret
 
 const protect = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -11,9 +16,9 @@ const protect = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretkey');
-    console.log('Decoded JWT:', decoded); // Debugging log to see the decoded JWT
-    req.userId = decoded.id; // Use `id` instead of `userId`
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log("Decoded JWT:", decoded); // Debugging log to see the decoded JWT
+    req.userId = decoded.id; // Attach userId to the request
     next();
   } catch (err) {
     res.status(401).json({
@@ -21,6 +26,5 @@ const protect = (req, res, next) => {
     });
   }
 };
-
 
 module.exports = { protect };

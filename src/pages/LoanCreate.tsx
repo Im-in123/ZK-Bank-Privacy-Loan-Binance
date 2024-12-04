@@ -10,7 +10,7 @@ import { CONTRACT_ADDRESS, APP_ID, SCHEMA_ID, BASE_URL } from "../constants";
  
 
 
-const LoanRequest: React.FC = () => {
+const LoanCreate: React.FC = () => {
   const [loanAmount, setLoanAmount] = useState<number>(1000);
   const [loanTerm, setLoanTerm] = useState<number>(12);
   const [loanStatus, setLoanStatus] = useState<string>("");
@@ -87,7 +87,7 @@ const LoanRequest: React.FC = () => {
       toast.success("Smart contract verification successful. Confirming transaction...");
 
       const loanData = { loanAmount, loanTerm };
-      const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
+      const response = await axios.post(`${BASE_URL}/loans/create`, loanData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
@@ -104,7 +104,26 @@ const LoanRequest: React.FC = () => {
       setLoading(false);
     }
   };
+const rep =async()=>{
+  try{
+  const loanData = { loanAmount:1000, loanTerm:12 };
+  const response = await axios.post(`${BASE_URL}/loans/create`, loanData, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
 
+  if (response.status === 201) {
+    setLoanStatus("Loan successfully approved!");
+    toast.success("Your loan request has been approved!");
+  } else {
+    setLoanStatus("Error creating loan on the backend.");
+  }
+} catch (error) {
+  console.error("Error verifying loan:", error);
+  toast.error("An error occurred during verification. Please try again.");
+} finally {
+  setLoading(false);
+}
+}
   return (
     <div className="loan-form-container">
       <form className="form" onSubmit={requestVerifyMessage}>
@@ -166,9 +185,12 @@ const LoanRequest: React.FC = () => {
             Please note that we use <strong>zkProofs</strong> for all verifications, ensuring that none of your private Binance data is exposed. Your financial data will remain confidential, and only the proof of eligibility will be shared for verification.
           </p>
         </div>
+          <button  onClick={()=>rep()}>
+  
+        </button>
      
     </div>
   );
 };
 
-export default LoanRequest;
+export default LoanCreate;

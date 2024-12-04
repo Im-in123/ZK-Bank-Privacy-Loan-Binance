@@ -7,7 +7,7 @@ import SignUp from "./pages/Signup";
 import Login from "./pages/Login";
 import LoanHistory from "./pages/LoanHistory";
 import Dashboard from "./pages/Dashboard"; 
-import LoanRequest from "./pages/LoanRequest";
+import LoanCreate from "./pages/LoanCreate";
 import AuthWrapper from "./utils/AuthWrapper";  
 import LoanDetail from "./pages/LoanDetail";
 
@@ -46,10 +46,10 @@ const Router = () => {
             }
           />
           <Route
-            path="/loan-request"
+            path="/loan-create"
             element={
               <AuthWrapper>
-                <LoanRequest />
+                <LoanCreate />
               </AuthWrapper>
             }
           />
