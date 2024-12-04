@@ -268,11 +268,13 @@ npm run dev
 ## 4. Backend Setup
 1. Go back to the root of the  project
 2. Navigate to the backend Directory
+3. Setup a mongodb or mongo atlas database and note your mongo connection string or connection uri.
 3. Create .env File:
  - Create a .env file and populate it with the following information:
 ```bash
 PORT=your_port_number
 JWT_SECRET=your_jwt_secret
+MONGO_URI=your-mondo-db-connection-uri
 ```
 
 4. Install Dependencies:
