@@ -33,7 +33,7 @@ const Dashboard: React.FC = () => {
         <Link to="/loan-history" className="dashboard-link">
           View Loan History
         </Link>
-        <Link to="/loan-request" className="dashboard-link">
+        <Link to="/loan-create" className="dashboard-link">
           Apply for a Loan
         </Link>
       </div>
