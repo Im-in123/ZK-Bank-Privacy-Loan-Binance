@@ -39,7 +39,7 @@ const LoanCreate: React.FC = () => {
       console.log("APP_ID::", APP_ID)
       const connector = new TransgateConnect(APP_ID);
       const isAvailable = await connector.isTransgateAvailable();
-
+      console.log("isAvailable")
       if (!isAvailable) {
         toast.error("Please install zkPass Transgate.");
         return;
@@ -105,27 +105,7 @@ const LoanCreate: React.FC = () => {
   };
 
  
-const rep =async()=>{
-  try{
-    
-  const loanData = { loanAmount:1000, loanTerm:12 };
-  const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
-
-  if (response.status === 201) {
-    setLoanStatus("Loan successfully approved!");
-    toast.success("Your loan request has been approved!");
-  } else {
-    setLoanStatus("Error creating loan on the backend.");
-  }
-} catch (error) {
-  console.error("Error verifying loan:", error);
-  toast.error("An error occurred during verification. Please try again.");
-} finally {
-  setLoading(false);
-}
-}
+ 
   return (
     <div className="loan-form-container">
       <form className="form" onSubmit={requestVerifyMessage}>
@@ -187,9 +167,7 @@ const rep =async()=>{
             Please note that we use <strong>zkProofs</strong> for all verifications, ensuring that none of your private Binance data is exposed. Your financial data will remain confidential, and only the proof of eligibility will be shared for verification.
           </p>
         </div>
-          <button  onClick={()=>rep()}>
-  
-        </button>
+           
      
     </div>
   );
