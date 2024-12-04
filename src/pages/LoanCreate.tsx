@@ -87,7 +87,7 @@ const LoanCreate: React.FC = () => {
       toast.success("Smart contract verification successful. Confirming transaction...");
 
       const loanData = { loanAmount, loanTerm };
-      const response = await axios.post(`${BASE_URL}/loans/create`, loanData, {
+      const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
@@ -107,7 +107,7 @@ const LoanCreate: React.FC = () => {
 const rep =async()=>{
   try{
   const loanData = { loanAmount:1000, loanTerm:12 };
-  const response = await axios.post(`${BASE_URL}/loans/create`, loanData, {
+  const response = await axios.post(`${BASE_URL}/loans/request`, loanData, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 
@@ -159,7 +159,7 @@ const rep =async()=>{
           <p><strong>Loan Term:</strong> {loanTerm} months</p>
           <p><strong>Monthly Payment:</strong> {calculateMonthlyPayment(loanAmount, loanTerm).toFixed(2)} USDT</p>
           <p><strong>Total Repayment:</strong> {(calculateMonthlyPayment(loanAmount, loanTerm) * loanTerm).toFixed(2)} USDT</p>
-          <p><strong>Interest Rate:</strong> 5%</p>
+          <p><strong>Interest Rate:</strong> 0.05%</p>
         </div>
       </form>
       <div>

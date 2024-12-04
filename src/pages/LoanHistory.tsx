@@ -12,7 +12,7 @@ interface LoanDetails {
 }
 
 interface Loan {
-  id: string;
+  _id: string;
   loanAmount: number;
   loanTerm: number;
   loanStatus: string;
@@ -37,6 +37,7 @@ const LoanHistory: React.FC = () => {
           },
         });
         setLoans(response.data.loans); // Assuming response data contains an array of loans
+        console.log("Loans::",response.data.loans )
       } catch (err: any) {
         console.log('error:', err);
         if (err.response?.status === 401) {
@@ -68,9 +69,9 @@ const LoanHistory: React.FC = () => {
         <ul className="loan-list">
           {loans.map((loan) => (
             <li
-              key={loan.id}
+              key={loan._id}
               className="loan-item"
-              onClick={() => handleLoanClick(loan.id)} // Add onClick handler
+              onClick={() => handleLoanClick(loan._id)} // Add onClick handler
             >
               <div className="loan-detail">
                 <strong>Loan Amount:</strong> ${loan.loanAmount}

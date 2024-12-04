@@ -10,6 +10,7 @@ const LoanSchema = new mongoose.Schema({
     interestRate: { type: String },
   },
   approvedAmount: { type: Number },
+  loanStatus: { type: String }
 });
 
 const LoanModel = mongoose.model("Loan", LoanSchema);

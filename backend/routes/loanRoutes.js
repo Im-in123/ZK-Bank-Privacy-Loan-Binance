@@ -1,13 +1,12 @@
-// routes/loanRoutes.js
-const express = require("express");
-const { createLoan, getUserLoans, approveLoan } = require("../controllers/loanController.js");
-const { protect } = require("../middleware/authMiddleware.js");
+const express = require('express');
+const { requestLoan, getLoanHistory, getLoanDetails } = require("../controllers/loanController.js");
+const { protect } = require("../middleware/authMiddleware.js"); // Middleware to protect routes
 
-const router = express.Router();
+const loanRouter = express.Router();
 
 // Protect middleware ensures that only authenticated users can access the routes
-router.post("/create", protect, createLoan); // Route to request a new loan
-router.get("/history", protect, getUserLoans); // Route to get loan history
-router.post("/approve", protect, approveLoan); // Route to approve a loan (admin functionality)
+loanRouter .post("/request", protect, requestLoan); // Route to request a new loan
+loanRouter .get("/history", protect, getLoanHistory); // Route to get loan history
+loanRouter .get("/:loanId", protect, getLoanDetails); // Route to get loan details by loan ID
 
-module.exports = router;
+module.exports =loanRouter ;
