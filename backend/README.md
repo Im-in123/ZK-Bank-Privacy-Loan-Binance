@@ -1,7 +1,7 @@
 
 
-vercel env add PORT 3001
-vercel env add JWT_SECRET thatssecret
+vercel env add PORT 5000
+vercel env add JWT_SECRET supersecretkey
 
 
 vercel env add <name> <value>  available in all environments

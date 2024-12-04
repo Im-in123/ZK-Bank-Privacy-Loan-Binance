@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+const JWT_SECRET = process.env.JWT_SECRET ;
 console.log("JWT SECRET:", JWT_SECRET); // Debugging log for JWT secret
 
 const protect = (req, res, next) => {

@@ -4,7 +4,7 @@ const UserModel = require("../models/UserModel");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Signup logic
 const signup = async (req, res) => {
