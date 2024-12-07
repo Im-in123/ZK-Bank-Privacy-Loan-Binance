@@ -260,7 +260,8 @@ export const SCHEMA_ID = "7b7b31ecbc654213ba7fc189b01d21f3";
 ```
 Replace BASE_URL with the URL of your backend server.
 Start the Frontend Server:
-4. Add the frontend url to the cors allow list in the index.js
+4. Add the frontend url to the cors allow list in the index.js.
+
 5. Run the following command to start the frontend server:
 ```bash
 npm run dev
@@ -285,6 +286,7 @@ MONGO_URI=your-mondo-db-connection-uri
 npm install
 ```
 5. Add the frontend url to the cors allow list in the index.js
+
 6. Start the Backend Server:
 ```bash
 npm start
