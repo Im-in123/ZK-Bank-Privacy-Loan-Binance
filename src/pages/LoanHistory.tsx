@@ -36,8 +36,9 @@ const LoanHistory: React.FC = () => {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        setLoans(response.data.loans); // Assuming response data contains an array of loans
-        console.log("Loans::",response.data.loans )
+        const loaddata= response.data.loans.reverse()
+        setLoans(loaddata); // Assuming response data contains an array of loans
+        console.log("Loans::",loaddata)
       } catch (err: any) {
         console.log('error:', err);
         if (err.response?.status === 401) {

@@ -9,7 +9,19 @@ const loanRoutes = require("./routes/loanRoutes");
 dotenv.config();
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: [
+  
+    "http://localhost:5173", 
+    "http://127.0.0.1:5173", 
+    'https://ideal-tribble-vw56rpqj6ggfvwx-5173.app.github.dev',
+    "https://zk-bank-privacy-loan-binance.vercel.app"
+  ],  
+  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
+  credentials: true, // Include credentials like cookies or authorization headers
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB
