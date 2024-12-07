@@ -23,9 +23,10 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
 
 ## Live Application
 NB: Live application might be down if hosting platform is down or upgrading. Or might not work as expected due to extra configurations on the hosting platforms(In case emergency please run locally).
-👉 1. **[Frontend:](https://zk-bank-privacy-loan-binance.vercel.app/)**
+👉 
+1. **[Frontend](https://zk-bank-privacy-loan-binance.vercel.app/)**
 
- 2. **[Backend Api:](https://zk-bank-privacy-loan-binance-rtbo.vercel.app/)**
+2. **[Backend Api](https://zk-bank-privacy-loan-binance-rtbo.vercel.app/)**
 
 
 ---
@@ -137,7 +138,8 @@ cd ZK-Bank-Privacy-Loan-Binance
    - Sign up or log in if you haven’t already.
 
 2. **Create a New App:**
-   - Click on **Create New App** and make sure to copy the **appId**, as you will need it for the frontend integration.
+   - Click on **Create New App** and enter your frontend url without trailing slash into the domain field.
+   - After creating, make sure to copy the **appId**, as you will need it for the frontend integration.
 
 3. **Add a Custom Schema:**
    - After creating the app, click on **Add Schema** and select **Custom Schema**.
@@ -258,7 +260,8 @@ export const APP_ID = "b7627e76-b9f2-41b0-b954-2bc5f63ecec3";
 export const SCHEMA_ID = "7b7b31ecbc654213ba7fc189b01d21f3";
 ```
 Replace BASE_URL with the URL of your backend server.
-Start the Frontend Server:
+Start the Frontend Server.
+
 4. Add the frontend url to the cors allow list in the index.js.
 
 5. Run the following command to start the frontend server:
