@@ -11,7 +11,11 @@ With **zkPass** and these **Binance schemas**, users can maintain their financia
 
 ## Video Demonstration
 
-📺 Watch a demo of the App:👉 **Local copy of demo video(Demo.mp4) exists at project root folder**
+📺 Watch a demo of the App:  **👉 (https://youtu.be/BOWJsAzv9OY)**
+
+Local copy of demo video(demo.mp4) also exists at project root folder [here](Demo.mp4).
+ 
+
 
 ---
 ## My Deployed Smart Contract Address
